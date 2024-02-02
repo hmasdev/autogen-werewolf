@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  werewolf:
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - .:/workspace
+    command: /bin/bash
+    tty: true

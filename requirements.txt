@@ -1,0 +1,4 @@
+click==8.1.7
+langchain==0.0.351
+pyautogen==0.2.2
+python-dotenv==1.0.0
