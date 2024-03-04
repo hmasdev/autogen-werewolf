@@ -12,9 +12,9 @@ from typing import Callable, Iterable, TypeAlias, TypeVar
 import autogen
 import click
 from dotenv import load_dotenv
-from langchain.llms.base import BaseLLM
-from langchain.llms.openai import OpenAI
+from langchain_openai import ChatOpenAI
 
+DEFAULT_MODEL = 'gpt-4-turbo-preview'
 TWerewolfGameMaster = TypeVar('TWerewolfGameMaster', bound='WerewolfGameMaster')  # noqa
 TWerewolfPlayer = TypeVar('TWerewolfPlayer', bound='WerewolfPlayer')  # noqa
 WhoToVote: TypeAlias = str
@@ -74,7 +74,7 @@ def instant_decoration(
     objs: Iterable[object],
     name: str,
     deco: Callable[[Callable], Callable]
-) -> None:  # noqa
+) -> None:  # type: ignore
     original_methods = {}
     for obj in objs:
         original_methods[obj] = getattr(obj, name)
@@ -94,10 +94,11 @@ class WerewolfGameMaster(autogen.GroupChatManager):
         **kwargs
     ):
         super().__init__(*args, **{k: v for k, v in kwargs.items() if k != 'game_config'})  # noqa
-        self.setup(**game_config.__dict__)
-        self.groupchat = kwargs.get('groupchat') or args[0]
-        self.groupchat.agents = list(self.players.values())
         self._logger = logger
+        self.setup(**game_config.__dict__)
+        self.groupchat.agents = list(self.players.values())
+        # NOTE: __post_init__() must be called manually because self.groupchat.agents is set after __init__  # noqa
+        self.groupchat.__post_init__()
 
     def setup(
         self,
@@ -217,9 +218,9 @@ class WerewolfGameMaster(autogen.GroupChatManager):
     def reset_temporal_safe_players(self):
         self._temporal_safe_players = []
 
-    def clean_name(self, name: str, llm: BaseLLM | None = None, max_retry: int = 2) -> str:
-        llm = llm or OpenAI(model='gpt-3.5-turbo-instruct')
-        name = llm('\n'.join([
+    def clean_name(self, name: str, llm: ChatOpenAI | None = None, max_retry: int = 2) -> str:
+        llm = llm or ChatOpenAI(model=DEFAULT_MODEL)
+        name = llm.invoke('\n'.join([
             'Extract the valid name of player which should be excluded from the game.',
             'Search the name in the following sentences:',
             f'```text',
@@ -230,7 +231,7 @@ class WerewolfGameMaster(autogen.GroupChatManager):
             'You must select the name from the above list.'
             '\n',
             '>>> Sure! The valid name of player which should be excluded from the game is '
-        ]))
+        ])).content
         name = name.replace('.', '').replace(',', '').replace(':', '').replace(';', '').replace('"', '').replace("'", '').replace('`', '').strip().split(' ')[0]  # noqa
         if name not in [agent.name for agent in self.alive_players]:
             if max_retry == 0:
@@ -245,6 +246,7 @@ class WerewolfGameMaster(autogen.GroupChatManager):
         prompt: str = 'Who do you think should be excluded from the game?',
         silent: bool = False,
     ) -> WhoToVote:  # noqa
+        self._logger.debug(f'Ask {player.name} to vote')
         alive_player_names = [player.name for player in self.alive_players]
         with just1turn(self):
             self.send('\n'.join([
@@ -266,6 +268,7 @@ class WerewolfGameMaster(autogen.GroupChatManager):
         show_log: bool = False,
         **kwargs
     ):  # noqa
+        self._logger.debug('Announce message to players')
         if show_log:
             self._logger.info(f'[From GameMaster] {message}')
         if isinstance(player, autogen.Agent):
@@ -283,6 +286,7 @@ class WerewolfGameMaster(autogen.GroupChatManager):
                 self.announce(message, p, **kwargs, show_log=False)
 
     def daytime_discussion(self) -> dict[str, WhoToVote]:
+        self._logger.debug('Start daytime discussion')
         # discussion
         self.groupchat.agents = self.alive_players
         self.groupchat.messages = self._daytime_log
@@ -315,6 +319,7 @@ class WerewolfGameMaster(autogen.GroupChatManager):
         return {p.name: self.clean_name(self.ask_to_vote(p, silent=self.is_slient_game and (p.human_input_mode != 'ALWAYS'))) for p in self.alive_players}  # noqa
 
     def nighttime_action(self) -> dict[str, WhoToVote]:
+        self._logger.debug('Start nighttime action')
         # werevolves discussions
         if len(self.alive_werevolves) > 1:
             self.groupchat.agents = self.alive_werevolves
@@ -360,6 +365,7 @@ class WerewolfGameMaster(autogen.GroupChatManager):
         return {p.name: p.act_in_night(self) for p in self.alive_players}
 
     def exclude_players_following_votes(self, votes: dict[str, str], announce_votes: bool = True):
+        self._logger.debug('Exclude players following votes')
         # count votes
         count = {}
         for vote in votes.values():
@@ -408,6 +414,7 @@ class WerewolfGameMaster(autogen.GroupChatManager):
         self.announce(f'Note that the mapping from voters to votes is as follows: {votes}', self, silent=True)  # noqa
 
     def check_victory_condition(self) -> EResult | None:
+        self._logger.debug('Check victory condition')
         n_alive_werewolves = len(self.alive_werevolves)
         n_alive_players = len(self.alive_players)
         if n_alive_werewolves == 0:
@@ -541,13 +548,14 @@ def game(
     speaker_selection_method: str = 'round_robin',
     include_human: bool = False,
     open_game: bool = False,
-    config_list=[{'model': 'gpt-3.5-turbo-16k'}],
-    llm: OpenAI | str | None = None,
+    config_list=[{'model': DEFAULT_MODEL}],
+    llm: ChatOpenAI | str | None = None,
     log_file: str = 'werewolf.log',
+    logger: logging.Logger = logging.getLogger(__name__),
 ):
     # preparation
-    llm = OpenAI(model=llm) if isinstance(llm, str) else llm
-    llm = llm or OpenAI(model='gpt-3.5-turbo-instruct')
+    llm = ChatOpenAI(model=llm) if isinstance(llm, str) else llm
+    llm = llm or ChatOpenAI(model=DEFAULT_MODEL)
     master = WerewolfGameMaster(
         groupchat=autogen.GroupChat(agents=[], messages=[]),
         name='GameMaster',
@@ -571,9 +579,16 @@ def game(
     )
 
     # start game
-    days = range(len(master.alive_players))
+    # check victory condition before starting the game
+    # TODO: refactor
+    if result := master.check_victory_condition():
+        logger.warning('The game is already finished.')
+        days = []
+    else:
+        days = range(len(master.alive_players))
     for day in days:
         # announce day
+        click.echo(f'======================== Day {day} (Daytime) ========================', color='green')  # noqa
         master.announce(
             '\n'.join([
                 f'Day {day}: Daytime.',
@@ -593,6 +608,7 @@ def game(
             break
             # announce day
         # announce night
+        click.echo(f'======================== Day {day} (Nighttime) ========================', color='green')  # noqa
         master.announce(
             '\n'.join([
                 f'Day {day}: Nighttime.',
@@ -632,8 +648,10 @@ def game(
 @click.option('-h', '--include-human', is_flag=True, help='Whether to include human or not.')  # noqa
 @click.option('-o', '--open-game', is_flag=True, help='Whether to open game or not.')  # noqa
 @click.option('-l', '--log', default=None, help='The log file name. Default is werewolf%Y%m%d%H%M%S.log')  # noqa
-@click.option('-m', '--model', default='gpt-3.5-turbo-16k', help='The model name. Default is gpt-3.5-turbo-16k.')  # noqa
-@click.option('--sub-model', default='gpt-3.5-turbo-instruct', help='The sub-model name. Default is gpt-3.5-turbo-instruct.')  # noqa
+@click.option('-m', '--model', default=DEFAULT_MODEL, help=f'The model name. Default is {DEFAULT_MODEL}.')  # noqa
+@click.option('--sub-model', default=DEFAULT_MODEL, help=f'The sub-model name. Default is {DEFAULT_MODEL}.')  # noqa
+@click.option('--log-level', default='WARNING', help='The log level, DEBUG, INFO, WARNING, ERROR or CRITICAL. Default is WARNING.')  # noqa
+@click.option('--debug', is_flag=True, help='Whether to show debug logs or not.')  # noqa
 def main(
     n_players: int,
     n_werewolves: int,
@@ -646,28 +664,30 @@ def main(
     log: str,
     model: str,
     sub_model: str,
+    log_level: str,
+    debug: bool,
 ):
     load_dotenv()
     if os.environ.get('OPENAI_API_KEY') is None:
-        raise ValueError('You must set OPENAI_API_KEY in your environment variables or .env file.')
+        raise ValueError('You must set OPENAI_API_KEY in your environment variables or .env file.')  # noqa
     log = f'werewolf{dt.now().strftime("%Y%m%d%H%M%S")}.log' if log is None else log  # noqa
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.DEBUG if debug else getattr(logging, log_level.upper(), 'WARNING'))  # noqa
     config_list = [{'model': model}]
-    print(
-        game(
-            n_players=n_players,
-            n_werewolves=n_werewolves,
-            n_knight=n_knight,
-            n_fortune_teller=n_fortune_teller,
-            n_turns_per_day=n_turns_per_day,
-            speaker_selection_method=speaker_selection_method.value,
-            include_human=include_human,
-            open_game=open_game,
-            log_file=log,
-            config_list=config_list,
-            llm=sub_model,
-        )
+    result = game(
+        n_players=n_players,
+        n_werewolves=n_werewolves,
+        n_knight=n_knight,
+        n_fortune_teller=n_fortune_teller,
+        n_turns_per_day=n_turns_per_day,
+        speaker_selection_method=speaker_selection_method.value,
+        include_human=include_human,
+        open_game=open_game,
+        log_file=log,
+        config_list=config_list,
+        llm=sub_model,
     )
+    click.echo('======================== Game Result ========================', color='green')  # noqa
+    print(result)
 
 
 if __name__ == "__main__":

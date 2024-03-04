@@ -2,9 +2,13 @@
 
 ## Requirements
 
-- `docker`
 - OpenAI API Key
   - [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+
+- (optional) `docker compose`
+- (optional) python >= 3.10
+
+Note that either of `docker compose` or `python` is required.
 
 ## How to Use
 
@@ -15,6 +19,14 @@
 
    ```text
    OPENAI_API_KEY=HERE_IS_YOUR_OPENAI_API_KEY
+   ```
+
+3. If you don't use `docker` but `python` in your machine, create a virtual environment and install libraries manually:
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # or `venv/Scripts/activate` in windows
+   python -m pip install -r requirements.txt
    ```
 
 ### Enjoy a Werewolf Game
@@ -53,6 +65,8 @@ Options:
   --sub-model TEXT                The sub-model name. Default is gpt-3.5-turbo-instruct.
   --help                          Show this message and exit.
 ```
+
+If you don't use `docker`, ignore `docker compose run werewolf` in the above commands.
 
 ## LICENSE
 
