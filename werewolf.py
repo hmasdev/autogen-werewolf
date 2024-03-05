@@ -100,6 +100,13 @@ class WerewolfGameMaster(autogen.GroupChatManager):
         # NOTE: __post_init__() must be called manually because self.groupchat.agents is set after __init__  # noqa
         self.groupchat.__post_init__()
 
+    @property
+    def day(self) -> int:
+        return self._day
+
+    def next_day(self):
+        self._day += 1
+
     def setup(
         self,
         n_players: int,
@@ -111,6 +118,7 @@ class WerewolfGameMaster(autogen.GroupChatManager):
         n_turns_per_day: int = 2,
         silent: bool = True,
     ):
+        self._day: int = 1
         self.speaker_selection_method = speaker_selection_method
         self.n_turns_per_day = n_turns_per_day
         self.is_slient_game = silent
@@ -364,7 +372,7 @@ class WerewolfGameMaster(autogen.GroupChatManager):
 
         return {p.name: p.act_in_night(self) for p in self.alive_players}
 
-    def exclude_players_following_votes(self, votes: dict[str, str], announce_votes: bool = True):
+    def exclude_players_following_votes(self, votes: dict[str, str], announce_votes: bool = True) -> str:   # noqa
         self._logger.debug('Exclude players following votes')
         # count votes
         count = {}
@@ -376,11 +384,12 @@ class WerewolfGameMaster(autogen.GroupChatManager):
         # remove safe players
         candidates = [name for name in candidates if name not in self._temporal_safe_players]  # noqa
         if len(candidates) == 0:
+            result = '\n'.join([
+                'No one is excluded.',
+                'Think about what has happened and what you should do in the next action.',  # noqa
+            ])
             self.announce(
-                '\n'.join([
-                    'No one is excluded.',
-                    'Think about what has happened and what you should do in the next action.',  # noqa
-                ]),
+                result,
                 list(self.alive_players.values()),
                 show_log=True,
             )  # noqa
@@ -388,30 +397,37 @@ class WerewolfGameMaster(autogen.GroupChatManager):
             # extract
             excluded = random.choice(candidates)
             if excluded not in self.players:
+                result = '\n'.join([
+                    'No one is excluded.',
+                    'Think about what has happened and what you should do in the next action.',  # noqa
+                ])
                 self.announce(
-                    '\n'.join([
-                        'No one is excluded.',
-                        'Think about what has happened and what you should do in the next action.',  # noqa
-                    ]),
+                    result,
                     list(self.players.values()),
                     show_log=True,
                 )
             else:
+                result = '\n'.join([
+                    f'{excluded} is excluded from the game.',
+                    'Think about what has happened and what you should do in the next action.',  # noqa
+                ])
                 self.players[excluded].status = EStatus.Excluded
                 self.players[excluded].register_reply([autogen.Agent, None], lambda self, messages, sender, config: (True, f'{self.name} has been already excluded'), position=0)  # noqa
                 if self.check_victory_condition() is not None:
-                    return
-                self.announce('\n'.join([
-                        f'{excluded} is excluded from the game.',
-                        'Think about what has happened and what you should do in the next action.',  # noqa
-                    ]),
+                    return result
+                self.announce(
+                    result,
                     list(self.players.values()),
                     show_log=True,
                 )  # noqa
+
         # announce votes
+        content: str = f'Note that the mapping from voters to votes is as follows: {votes}'
         if announce_votes:
-            self.announce(f'Note that the mapping from voters to votes is as follows: {votes}', list(self.players.values()))  # noqa
-        self.announce(f'Note that the mapping from voters to votes is as follows: {votes}', self, silent=True)  # noqa
+            self.announce(content, list(self.players.values()))
+        self.announce(content, self, silent=True)
+
+        return result
 
     def check_victory_condition(self) -> EResult | None:
         self._logger.debug('Check victory condition')
@@ -445,7 +461,8 @@ class WerewolfPlayer(autogen.ConversableAgent):
             f'- First say your name when you speak something.',
         ])
         super().__init__(*args, **kwargs)
-        self.status = EStatus.Alive
+        self.status: EStatus = EStatus.Alive
+        self.note: str = ''
 
     def vote(self, master: WerewolfGameMaster, **kwargs) -> WhoToVote:
         return master.ask_to_vote(self, **kwargs)
@@ -553,6 +570,7 @@ def game(
     log_file: str = 'werewolf.log',
     logger: logging.Logger = logging.getLogger(__name__),
 ):
+    # TODO: think about what the difference btw game and master
     # preparation
     llm = ChatOpenAI(model=llm) if isinstance(llm, str) else llm
     llm = llm or ChatOpenAI(model=DEFAULT_MODEL)
@@ -586,12 +604,12 @@ def game(
         days = []
     else:
         days = range(len(master.alive_players))
-    for day in days:
+    for _ in days:
         # announce day
-        click.echo(f'======================== Day {day} (Daytime) ========================', color='green')  # noqa
+        click.echo(f'=============================== Day {master.day} (Daytime) ================================')  # noqa
         master.announce(
             '\n'.join([
-                f'Day {day}: Daytime.',
+                f'Day {master.day}: Daytime.',
                 f'Alive players: {[player.name for player in master.alive_players]}',  # noqa
                 'Get it?',
             ]),
@@ -602,16 +620,23 @@ def game(
         # daytime discussion
         votes = master.daytime_discussion()
         # exclude from the game
-        master.exclude_players_following_votes(votes)
+        excluded_result = master.exclude_players_following_votes(votes)
+        click.echo('\n'.join([
+            '============================== Excluded result ==============================',
+            excluded_result,
+            '=============================================================================',
+            json.dumps(votes),
+            '=============================================================================',
+        ]))
         # check victory condition
         if result := master.check_victory_condition():
             break
             # announce day
         # announce night
-        click.echo(f'======================== Day {day} (Nighttime) ========================', color='green')  # noqa
+        click.echo(f'================================ Day {master.day} (Nighttime) ================================')  # noqa
         master.announce(
             '\n'.join([
-                f'Day {day}: Nighttime.',
+                f'Day {master.day}: Nighttime.',
                 f'Alive players: {[player.name for player in master.alive_players]}',  # noqa
                 'Get it?',
             ]),
@@ -622,12 +647,20 @@ def game(
         # nighttime action
         votes = master.nighttime_action()
         # exclude from the game
-        master.exclude_players_following_votes(votes, announce_votes=False)
+        excluded_result = master.exclude_players_following_votes(votes, announce_votes=False)  # noqa
+        click.echo('\n'.join([
+            '============================== Excluded result ==============================',
+            excluded_result,
+            '=============================================================================',
+        ]))
         # check victory condition
         if result := master.check_victory_condition():
             break
         # reset temporal safe players
         master.reset_temporal_safe_players()
+
+        # next day
+        master.next_day()
 
     # ending game
     with open(log_file, 'w') as f:
@@ -635,7 +668,17 @@ def game(
             'all_log': master._all_log,
             'message_log': {k.name: v for k, v in master.chat_messages.items()},
         }, f, indent=2)
-    return result.value, {name: role.role.value for name, role in master.players.items()}
+    return (
+        result.value,
+        {
+            name: {
+                'role': role.role.value,
+                'status': role.status,
+            }
+            for name, role in master.players.items()
+            if role.valid()
+        },
+    )
 
 
 @click.command()
@@ -686,8 +729,8 @@ def main(
         config_list=config_list,
         llm=sub_model,
     )
-    click.echo('======================== Game Result ========================', color='green')  # noqa
-    print(result)
+    click.echo('================================ Game Result ================================')  # noqa
+    click.echo(result)
 
 
 if __name__ == "__main__":
