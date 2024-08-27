@@ -14,7 +14,7 @@ import click
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 
-DEFAULT_MODEL = 'gpt-4-turbo-preview'
+DEFAULT_MODEL = 'gpt-4o-mini'
 TWerewolfGameMaster = TypeVar('TWerewolfGameMaster', bound='WerewolfGameMaster')  # noqa
 TWerewolfPlayer = TypeVar('TWerewolfPlayer', bound='WerewolfPlayer')  # noqa
 WhoToVote: TypeAlias = str
@@ -189,7 +189,8 @@ class WerewolfGameMaster(autogen.GroupChatManager):
             f'Player{i}': WerewolfPlayer.instantiate(
                 role,
                 name=f'Player{i}',
-                system_message='',
+                # Need to notify the player's name in the system message  # noqa
+                system_message=f'You are "Player{i}"',
                 llm_config=self.llm_config,
                 default_auto_reply=None,
                 human_input_mode='ALWAYS' if i == human_index else 'NEVER',
