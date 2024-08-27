@@ -14,7 +14,7 @@ import click
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 
-DEFAULT_MODEL = 'gpt-4-turbo-preview'
+DEFAULT_MODEL = 'gpt-4o-mini'
 TWerewolfGameMaster = TypeVar('TWerewolfGameMaster', bound='WerewolfGameMaster')  # noqa
 TWerewolfPlayer = TypeVar('TWerewolfPlayer', bound='WerewolfPlayer')  # noqa
 WhoToVote: TypeAlias = str
