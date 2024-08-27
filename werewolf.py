@@ -189,7 +189,8 @@ class WerewolfGameMaster(autogen.GroupChatManager):
             f'Player{i}': WerewolfPlayer.instantiate(
                 role,
                 name=f'Player{i}',
-                system_message='',
+                # Need to notify the player's name in the system message  # noqa
+                system_message=f'You are "Player{i}"',
                 llm_config=self.llm_config,
                 default_auto_reply=None,
                 human_input_mode='ALWAYS' if i == human_index else 'NEVER',
