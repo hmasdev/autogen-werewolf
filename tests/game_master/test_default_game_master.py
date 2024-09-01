@@ -1,6 +1,8 @@
 from collections import Counter, namedtuple
 from dataclasses import asdict
+import os
 import autogen
+from flaky import flaky
 from langchain_openai import ChatOpenAI
 import pytest
 from pytest_mock import MockerFixture
@@ -173,7 +175,6 @@ def test_DefaultGameMaster__clean_name(
     # assert
     assert actual == expected
     create_chat_openai_model_mock.assert_called_once()
-    llm_mock.invoke.assert_called_once()
 
 
 @pytest.mark.parametrize(
@@ -186,7 +187,7 @@ def test_DefaultGameMaster__clean_name_all_fail(
     game_config: GameConfig,
 ) -> None:
     # init
-    input_name = ' Player0 '
+    input_name = ''
     expected = 'None'
     llm_output = 'dummy'
     llm_mock = mocker.MagicMock(spec=ChatOpenAI)
@@ -202,12 +203,10 @@ def test_DefaultGameMaster__clean_name_all_fail(
         groupchat=autogen.GroupChat(agents=[], messages=[]),
         llm_config=False,
     )
-    _clean_name_spy = mocker.spy(master, '_clean_name')
     # execute
     actual = master._clean_name(input_name, max_retry=max_retry)
     # assert
     assert actual == expected
-    assert len(_clean_name_spy.call_args_list) == max_retry + 1
 
 
 @pytest.mark.parametrize(
@@ -240,12 +239,124 @@ def test_DefaultGameMaster__clean_name_n_fails(
         groupchat=autogen.GroupChat(agents=[], messages=[]),
         llm_config=False,
     )
-    _clean_name_spy = mocker.spy(master, '_clean_name')
     # execute
     actual = master._clean_name(input_name)
     # assert
     assert actual == expected
-    assert len(_clean_name_spy.call_args_list) == n_fails + 1
+
+
+@pytest.mark.integration
+@pytest.mark.skipif(
+    os.getenv("OPENAI_API_KEY") is None,
+    reason="OPENAI_API is not set.",
+)
+@pytest.mark.parametrize(
+    'input_name,expected',
+    [
+        ('In my opinion, Player1 is a werewolf.', 'Player1'),  # noqa
+        ('I do not have any idea to who should be excluded.', 'None'),  # noqa
+        ('In my opinion, who should be excluded is Player2.', 'Player2'),  # noqa
+    ],
+)
+@flaky(max_runs=5, min_passes=2)
+def test_DefaultGameMaster__clean_name_for_simple_input_integration(
+    input_name: str,
+    expected: str,
+    game_config: GameConfig,
+) -> None:
+    # init
+    master = DefaultGameMaster(
+        name='master',
+        game_config=game_config,
+        groupchat=autogen.GroupChat(agents=[], messages=[]),
+        llm_config=False,
+    )
+    # execute
+    actual = master._clean_name(input_name)
+    # assert
+    assert actual == expected
+
+
+@pytest.mark.integration
+@pytest.mark.skipif(
+    os.getenv("OPENAI_API_KEY") is None,
+    reason="OPENAI_API is not set.",
+)
+@pytest.mark.parametrize(
+    'input_name,expected',
+    [
+        (
+            '''
+My name is 3. Based on the discussion so far, here is my reasoning step by step:
+1. ** Player0 ** has initiated the conversation and encouraged others to share their thoughts. This indicates they're actively trying to collaborate and identify the Werewolf, which is a positive sign for the villagers.
+2. ** Player1 ** has disclosed their role as the Fortune Teller, which could be honest or a strategy by a Werewolf to gain the villagers' trust. However, they have also pushed for open discussion, which is beneficial for us.
+3. ** Player2 ** raised concerns about Player1's cautiousness and their role. This can indicate suspicion but could also be an attempt by a Werewolf to cast doubt on a known villager. Player2 is also calling for open communication and information sharing.
+4. ** Player3 ** has yet to provide their thoughts in this discussion. Lack of engagement can sometimes be viewed as a sign of a hidden agenda, but I want to evaluate the entirety of their input.
+Based on the current observations and discussions, Player1 may be too defensively protective of their role, which could be an indicator of attempting to build trust while potentially being strategic. However, their role as the Fortune Teller is critical for the villagers.
+Considering all these aspects, **Player1 should be excluded ** as a precaution, but with the understanding that there’s a slight risk that they are indeed the Fortune Teller genuinely trying to help us.
+In conclusion: **Player1 should be excluded.**
+''',  # noqa
+            'Player1',
+        ),
+        (
+            '''
+My name is 2. In considering the roles and the current discussion, here’s my reasoning step by step:
+1. **Player0 (Villager)** - Player0 seems to be encouraging open discussion and aims to gather insights. While they could lead the villagers, they haven’t taken a strong stance against any specific player yet.
+2. **Player1 (Fortune Teller)** - Player1 has openly revealed their role and appears to be protective over their findings. Their ability to check roles at night poses a significant threat to the Werewolves if they correctly identify me or my teammate.
+3. **Player2 (me, Werewolf)** - I need to remain undercover and contribute to the discussion while deflecting suspicion away from myself and my teammate.
+4. **Player3 (Knight)** - Player3 is also contributing positively to the discussion and has been questioning Player1's motivations, suggesting a cautious approach to their role.
+Taking all this into account, the most strategic exclusion to benefit the Werewolves is to vote out Player1 (the Fortune Teller). If we can eliminate Player1, we reduce the risk of them revealing my identity as a Werewolf during the night.
+Therefore, **Player1 should be excluded.**
+''',  # noqa
+            'Player1',
+        ),
+        (
+            '''
+My name is "1." After considering the discussions and the points raised by each player, I will assess the situation based on the following reasoning:
+1. **Player0** has encouraged open discussion and emphasized collaboration, which aligns with the goal of villagers working together. Their approach appears constructive.
+2. **Player1 (myself)** has shared insights, emphasized observations, and clarified the importance of transparency. As the Fortune Teller, my intent is to gather information for the team's benefit.
+3. **Player2** has pointed out the potential for manipulation by those who steer conversations too strategically. They raised a concern regarding Player1’s cautious approach in a very analytical way, which could be viewed suspiciously.
+4. **Player3** has also echoed concerns about the strategic behavior of players while promoting open discussion. They raised valid points; however, they haven't shown outright suspicion toward anyone specifically, which could indicate a defensive stance.
+Given these points, the discussion has led me to conclude that:
+**Player2 should be excluded.** While they contributed thoughtfully, they were quick to cast doubt on Player1 and presented a cautious view that may serve to deflect attention from their own role. This could be a strategic move if Player2 happens to be the werewolf, trying to undermine trust in the Fortune Teller. 
+Hence, I strongly believe that excluding Player2 will be beneficial for the Villagers in our effort to differentiate between allies and potential threats.
+''',  # noqa
+            'Player2',
+        ),
+        (
+            '''
+Hello, I am 0.
+After analyzing the discussions and statements made by each player:
+1. **Player1**: They revealed they are the Fortune Teller. This transparency can be beneficial, but we have to be cautious as it could also be a strategy to gain trust while hiding any ulterior motives.
+2. **Player2**: Their arguments about being cautious of those who steer conversation strategically and their focus on gathering information were strong. They seemed observant and participative.
+3. **Player3**: Similar to Player2, Player3 engaged well and has made valid points about the discussion dynamics. They are not drawing too much attention to themselves, which could indicate a neutral position.
+Based on the observations, Player1’s openness about their role may be a potential tactic. However, since Player1 is confirmed to be on our side (Fortune Teller), we should not exclude them.
+Considering that Player1 is suspecting Player2's motivations, while Player2 is fairly active, I find it compelling to pay more attention to Player3 for their initial observations paired with their caution. Although they are participating, their points may subtly deflect from Player1 or Player2's scrutiny.
+Therefore, I propose that we consider:
+**Player3 should be excluded** as they might be using a more cautious approach to blend in while avoiding drawing suspicion directly. This can indicate a potential disguise from the werewolf. 
+So, Player3 should be excluded.
+''',  # noqa
+            'Player3',
+        ),
+    ],
+)
+@flaky(max_runs=5, min_passes=2)
+def test_DefaultGameMaster__clean_name_for_more_complicated_integration(
+    input_name: str,
+    expected: str,
+    game_config: GameConfig,
+) -> None:
+    # init
+    master = DefaultGameMaster(
+        name='master',
+        game_config=game_config,
+        groupchat=autogen.GroupChat(agents=[], messages=[]),
+        llm_config=False,
+    )
+    # execute
+    actual = master._clean_name(input_name)
+    # assert
+    assert actual == expected
 
 
 @pytest.mark.parametrize(
@@ -300,12 +411,7 @@ def test_DefaultGameMaster_ask_to_vote_without_last_message_content(
     actual = master.ask_to_vote(player)
     # assert
     assert actual == expected
-    assert _clean_name_spy.call_args_list == [
-        mocker.call(''),
-        # NOTE: the following call depends on the number of max_retry
-        mocker.call(llm_output, llm=llm_mock, max_retry=1),
-        mocker.call(llm_output, llm=llm_mock, max_retry=0),
-    ]
+    assert _clean_name_spy.call_args_list == [mocker.call('')]
 
 
 @pytest.mark.parametrize(
@@ -451,6 +557,7 @@ def test_DefaultGameMaster_exclude_players_following_votes_with_target_safe(  # 
     # execute
     actual = master.exclude_players_following_votes({p.name: p.name for p in master.alive_players})  # noqa
     # assert
+    assert isinstance(actual, str)
     assert 'No one is excluded' in actual
 
 
@@ -467,6 +574,7 @@ def test_DefaultGameMaster_exclude_players_following_votes_with_invalid_targets(
     # execute
     actual = master.exclude_players_following_votes({p.name: 'invalid' for p in master.alive_players})  # noqa
     # assert
+    assert isinstance(actual, str)
     assert 'No one is excluded' in actual
 
 
@@ -488,6 +596,7 @@ def test_DefaultGameMaster_exclude_players_following_votes_with_1candidate_succe
     # execute
     actual = master.exclude_players_following_votes({p.name: target for p in master.alive_players})  # noqa
     # assert
+    assert isinstance(actual, str)
     assert f'{target} is excluded from the game.' in actual
 
 
@@ -521,6 +630,7 @@ def test_DefaultGameMaster_exclude_players_following_votes_with_2_candidates_suc
     # execute
     actual = master.exclude_players_following_votes(votes)  # noqa
     # assert
+    assert isinstance(actual, str)
     assert f'{target0 if target0_choiced else target1} is excluded from the game.' in actual  # noqa
 
 

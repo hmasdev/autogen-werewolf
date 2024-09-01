@@ -5,8 +5,8 @@ description = "A CUI-based simple werewolf game with `autogen`"
 requires-python = ">=3.10"
 dependencies = [
     "click>=8.1.7",
-    "langchain==0.1.10",
-    "langchain-openai==0.0.8",
+    "langchain>=0.2.0",
+    "langchain-openai",
     "pyautogen==0.2.16",
     "python-dotenv>=1.0.1",
 ]
@@ -23,6 +23,7 @@ build-backend = "hatchling.build"
 dev = [
     "autopep8>=2.3.1",
     "flake8>=7.1.1",
+    "flaky>=3.8.1",
     "mypy>=1.11.2",
     "pytest>=8.3.2",
     "pytest-cov>=5.0.0",
@@ -33,6 +34,7 @@ dev = [
 dev-dependencies = [
     "autopep8>=2.3.1",
     "flake8>=7.1.1",
+    "flaky>=3.8.1",
     "mypy>=1.11.2",
     "pytest>=8.3.2",
     "pytest-cov>=5.0.0",
@@ -54,5 +56,5 @@ warn_unused_configs = true
 check_untyped_defs = true
 
 [[tool.mypy.overrides]]
-module = ['autogen']
+module = ['autogen', 'flaky']
 ignore_missing_imports = true

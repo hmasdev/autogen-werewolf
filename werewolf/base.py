@@ -62,7 +62,7 @@ class IWerewolfGameMaster(ABC, autogen.GroupChatManager):
         raise NotImplementedError()
 
     @abstractmethod
-    def exclude_players_following_votes(self, votes: dict[str, str], announce_votes: bool = True) -> str:   # noqa
+    def exclude_players_following_votes(self, votes: dict[str, str], announce_votes: bool = True) -> str | None:   # noqa
         raise NotImplementedError()
 
     @abstractmethod

@@ -79,7 +79,7 @@ def game(
         excluded_result = master.exclude_players_following_votes(votes)
         click.echo('\n'.join([
             '============================== Excluded result ==============================',  # noqa
-            excluded_result,
+            str(excluded_result),
             '=============================================================================',  # noqa
             json.dumps(votes),
             '=============================================================================',  # noqa
@@ -106,7 +106,7 @@ def game(
         excluded_result = master.exclude_players_following_votes(votes, announce_votes=False)  # noqa
         click.echo('\n'.join([
             '============================== Excluded result ==============================',  # noqa
-            excluded_result,
+            str(excluded_result),
             '=============================================================================',  # noqa
         ]))
         # check victory condition
