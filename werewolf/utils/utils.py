@@ -29,3 +29,21 @@ def instant_decoration(
     yield
     for obj, method in zip(objs, original_methods):
         setattr(obj, name, method)
+
+
+def consecutive_string_generator(
+    prefix: str,
+    start: int = 0,
+    step: int = 1,
+) -> Generator[str, None, None]:
+    """a generator to generate strings with a prefix and a number.
+
+    Args:
+        prefix (str): prefix of the string
+        start (int, optional): start number. Defaults to 0.
+        step (int, optional): step of the number. Defaults to 1.
+    """
+    idx = start
+    while True:
+        yield f'{prefix}{idx}'
+        idx += step

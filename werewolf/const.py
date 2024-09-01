@@ -5,6 +5,8 @@ DEFAULT_MODEL: str = 'gpt-4o-mini'
 DAYTIME_DISCUSSION_MANAGER_NAME: str = 'DiscussionManager(Daytime)'
 NIGHTTIME_DISCUSSION_MANAGER_NAME: str = 'DiscussionManager(Nighttime)'
 
+PREFIX_PLAYER_NAME: str = 'Player'
+
 
 class ESpeakerSelectionMethod(Enum):
     auto: str = 'auto'
