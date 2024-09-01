@@ -379,6 +379,64 @@ Player0がゲームから排除されました。
 
 </details>
 
+## Contribution
+
+### Development
+
+1. Fork the repository: [https://github.com/hmasdev/autogen-werewolf](https://github.com/hmasdev/autogen-werewolf)
+
+2. Clone the repository
+
+   ```bash
+   git clone https://github.com/{YOURE_NAME}/autogen-werewolf
+   cd autogen-werewolf
+   ```
+
+3. Create a virtual environment
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate
+   ```
+
+4. Install the required packages
+
+   ```bash
+   pip install -e .[dev]
+   ```
+
+5. Checkout your working branch
+
+   ```bash
+   git checkout -b your-working-branch
+   ```
+
+6. Make your changes
+
+7. Test your changes
+
+   ```bash
+   pytest
+   flake8 autogen-werewolf tests
+   mypy autogen-werewolf tests
+   ```
+
+8. Commit your changes
+
+   ```bash
+   git add .
+   git commit -m "Your commit message"
+   ```
+
+9. Push your changes
+
+   ```bash
+   git push origin your-working-branch
+   ```
+
+10. Create a pull request: [https://github.com/hmasdev/autogen-werewolf/compare](https://github.com/hmasdev/autogen-werewolf/compare)
+
+Note that you can use `uv` to develop the project in step 3, 4 and 7.
 
 ## LICENSE
 
@@ -389,7 +447,6 @@ Player0がゲームから排除されました。
 - [hmasdev](https://github.com/hmasdev)
 
 ## Reference
-
 
 - Autogen: [https://github.com/microsoft/autogen](https://github.com/microsoft/autogen)
 - Click: [https://github.com/pallets/click](https://github.com/pallets/click)
