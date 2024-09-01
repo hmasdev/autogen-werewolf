@@ -1,5 +1,12 @@
 # Werewolf Game with `autogen`
 
+![GitHub top language](https://img.shields.io/github/languages/top/hmasdev/autogen-werewolf)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/hmasdev/autogen-werewolf?sort=semver)
+![GitHub](https://img.shields.io/github/license/hmasdev/autogen-werewolf)
+![GitHub last commit](https://img.shields.io/github/last-commit/hmasdev/autogen-werewolf)
+[![PyPI version](https://badge.fury.io/py/autogen-werewolf.svg)](https://pypi.org/project/autogen-werewolf/)
+![Scheduled Test](https://github.com/hmasdev/autogen-werewolf/actions/workflows/tests-on-schedule.yaml/badge.svg)
+
 ![HEADER](pics/header.png)
 
 ## Requirements
