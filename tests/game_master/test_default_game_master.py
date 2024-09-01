@@ -265,7 +265,7 @@ def test_DefaultGameMaster_ask_to_vote(
         llm_config=False,
     )
     master.last_message = mocker.MagicMock(return_value={'content': expected})
-    master._clean_name = mocker.MagicMock(side_effect=lambda _: expected)
+    master._clean_name = mocker.MagicMock(side_effect=lambda _: expected)  # type: ignore # noqa
     player = master.alive_players[0]
     # execute
     actual = master.ask_to_vote(player)
@@ -367,7 +367,7 @@ def test_DefaultGameMaster_daytime_discussion(
         llm_config=False,
     )
     expected = {p.name: f'vote_{p.name}' for p in master.alive_players}
-    master.ask_to_vote = mocker.MagicMock(side_effect=lambda player, *args, **kwargs: expected.get(player.name))  # noqa
+    master.ask_to_vote = mocker.MagicMock(side_effect=lambda player, *args, **kwargs: expected.get(player.name))  # type: ignore # noqa
     run_chat_spy = mocker.spy(master, 'run_chat')
     # execute
     actual = master.daytime_discussion()
@@ -399,7 +399,7 @@ def test_DefaultGameMaster_nighttime_action_with_2_or_more_werewolves(
     )
     expected = {p.name: f'vote_{p.name}' for p in master.alive_players}
     for player in master.alive_players:
-        player.act_in_night = mocker.MagicMock(return_value=f'vote_{player.name}')  # noqa
+        player.act_in_night = mocker.MagicMock(return_value=f'vote_{player.name}')  # type: ignore # noqa
     run_chat_spy = mocker.spy(master, 'run_chat')
     assert len(master.alive_werewolves) == n_werewolves
     # execute
@@ -427,7 +427,7 @@ def test_DefaultGameMaster_nighttime_action_with_1_werewolf(
     )
     expected = {p.name: f'vote_{p.name}' for p in master.alive_players}
     for player in master.alive_players:
-        player.act_in_night = mocker.MagicMock(return_value=f'vote_{player.name}')  # noqa
+        player.act_in_night = mocker.MagicMock(return_value=f'vote_{player.name}')  # type: ignore # noqa
     send_spy = mocker.spy(master, 'send')
     assert len(master.alive_werewolves) == 1
     # execute

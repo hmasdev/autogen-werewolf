@@ -6,7 +6,7 @@ from werewolf.game_player.fortune_teller import FortuneTeller
 from werewolf.game_player.knight import Knight
 from werewolf.game_player.villager import Villager
 from werewolf.game_player.werewolf import Werewolf
-from werewolf.const import ERole, EStatus
+from werewolf.const import ERole, ESide, ESideVictoryCondition, EStatus
 
 
 @pytest.mark.parametrize(
@@ -49,9 +49,10 @@ def test_BaseWerewolfPlayer_vote(mocker: MockerFixture) -> None:
     assert player.vote(master) == master.ask_to_vote.return_value
 
 
-def test_BaseWerewolfPlayer_act_in_night() -> None:
+def test_BaseWerewolfPlayer_act_in_night(mocker: MockerFixture) -> None:
+    master = mocker.MagicMock(IWerewolfGameMaster)
     player = BaseWerewolfPlayer('name', llm_config=False)
-    assert player.act_in_night(None) is None
+    assert player.act_in_night(master) is None
 
 
 def test_BaseWerewolfPlayer_valid() -> None:
@@ -59,7 +60,7 @@ def test_BaseWerewolfPlayer_valid() -> None:
     assert not player.valid()
     player.role = ERole.Werewolf
     assert not player.valid()
-    player.side = ERole.Werewolf
+    player.side = ESide.Werewolf
     assert not player.valid()
-    player.victory_condition = ERole.Werewolf
+    player.victory_condition = ESideVictoryCondition.WerewolvesWinCondition.value  # noqa
     assert player.valid()
