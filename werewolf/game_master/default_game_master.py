@@ -15,13 +15,17 @@ from ..const import (
     ERole,
     EStatus,
     DAYTIME_DISCUSSION_MANAGER_NAME,
-    NIGHTTIME_DISCUSSION_MANAGER_NAME
+    NIGHTTIME_DISCUSSION_MANAGER_NAME,
+    PREFIX_PLAYER_NAME,
 )
 from ..config import GameConfig
 from ..game_player.base import BaseWerewolfPlayer
 from ..utils.autogen_utils import just1turn
 from ..utils.openai import create_chat_openai_model
-from ..utils.utils import instant_decoration
+from ..utils.utils import (
+    consecutive_string_generator,
+    instant_decoration,
+)
 
 
 class DefaultGameMaster(BaseGameMaster):
@@ -127,16 +131,19 @@ class DefaultGameMaster(BaseGameMaster):
         human_index = random.randint(0, n_players - 1) if include_human else None  # noqa
         # generate players
         self.players = {
-            f'Player{i}': BaseWerewolfPlayer.instantiate(
+            name: BaseWerewolfPlayer.instantiate(
                 role,
-                name=f'Player{i}',
+                name=name,
                 # Need to notify the player's name in the system message  # noqa
-                system_message=f'You are "Player{i}"',
+                system_message=f'You are "{i}"',
                 llm_config=self.llm_config,
                 default_auto_reply=None,
                 human_input_mode='ALWAYS' if i == human_index else 'NEVER',
             )
-            for i, role in enumerate(roles)
+            for i, (name, role) in enumerate(zip(
+                consecutive_string_generator(prefix=PREFIX_PLAYER_NAME),
+                roles,
+            ))
         }
         # initiate chat
         for player in self.players.values():
