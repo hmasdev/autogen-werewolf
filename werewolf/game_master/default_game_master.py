@@ -1,10 +1,20 @@
+from enum import Enum
 from functools import partial
 import json
 import logging
+from operator import attrgetter
 from typing import Iterable
 import random
+import re
 
 import autogen
+from langchain.output_parsers import (
+    EnumOutputParser,
+    RetryWithErrorOutputParser,
+)
+from langchain_core.prompt_values import StringPromptValue
+from langchain_core.runnables import Runnable, RunnableLambda
+from langchain.output_parsers.retry import NAIVE_RETRY_WITH_ERROR_PROMPT
 from langchain_openai import ChatOpenAI
 
 from ..alias import WhoToVote
@@ -176,27 +186,47 @@ class DefaultGameMaster(BaseGameMaster):
     def reset_temporal_safe_players(self):
         self._temporal_safe_players = []
 
-    def _clean_name(self, name: str, llm: ChatOpenAI | str | None = None, max_retry: int = 2) -> str:  # noqa
-        llm = create_chat_openai_model(llm)
-        name = llm.invoke('\n'.join([
-            'Extract the valid name of player which should be excluded from the game.',  # noqa
-            'Search the name in the following sentences:',
+    def _clean_name(self, name: str, llm: ChatOpenAI | str | None = None, max_retry: int = 5) -> str:  # noqa
+        logging.debug(f'Clean name: {name}')
+        base_llm_chain: Runnable[str, str] = (
+            create_chat_openai_model(llm)
+            | RunnableLambda(attrgetter('content'))
+        )
+        chain = RetryWithErrorOutputParser.from_llm(
+            parser=EnumOutputParser(enum=Enum(
+                'Players',
+                {agent.name: agent.name for agent in self.alive_players} | {'Nobody': 'None'},  # noqa
+            )),  # type: ignore # noqa
+            llm=base_llm_chain,  # type: ignore
+            prompt=NAIVE_RETRY_WITH_ERROR_PROMPT,
+            max_retries=max_retry,
+        )
+        prompt = '\n'.join([
+            'This is a werewolf game, where any player want to exclude another from the game to win the game.',  # noqa
+            'For example, a more suspicious player is more likely to be excluded from the game.',  # noqa
+            'You are the best at consolidating opinions and drawing conclusions.',  # noqa
+            'Extract the valid name of player which should be excluded from the game, from what a player has said.',  # noqa
+            'Here is the content of what a player has said:',
             '```text',
             name,
             '```',
-            'Note that the valid name of player is one of the following:'
-            '\n'.join([f'  - {agent.name}' for agent in self.alive_players]),  # noqa
-            'You must select the name from the above list.'
-            '\n',
-            '>>> Sure! The valid name of player which should be excluded from the game is '  # noqa
-        ])).content  # type: ignore
-        name = name.replace('.', '').replace(',', '').replace(':', '').replace(';', '').replace('"', '').replace("'", '').replace('`', '').strip().split(' ')[0]  # noqa
-        if name not in [agent.name for agent in self.alive_players]:
-            if max_retry == 0:
-                logging.warning(f'Failed to extract a name from {name}')
-                return 'None'
-            return self._clean_name(name, llm=llm, max_retry=max_retry-1)
-        return name
+            'Who do you think should be excluded from the game?',
+        ])
+        try:
+            cleaned_name: str = chain.parse_with_prompt(
+                completion=prompt,
+                prompt_value=StringPromptValue(text=prompt),
+            ).value
+            logging.debug(f'Cleaned name: {cleaned_name}')
+            return cleaned_name
+        except Exception as e:
+            if mtch := re.findall(rf'{PREFIX_PLAYER_NAME}\d+', name):
+                return mtch[-1]  # type: ignore
+            if self.is_silent_game:
+                logging.debug(f'Failed to extract a name from {name}', exc_info=e)  # noqa
+            else:
+                logging.warning(f'Failed to extract a name from {name}', exc_info=e)  # noqa
+            return 'None'
 
     def ask_to_vote(
         self,
@@ -209,10 +239,11 @@ class DefaultGameMaster(BaseGameMaster):
         with just1turn(self):
             self.send('\n'.join([
                     prompt,
-                    f'Please select the name of the player from the following list in order to help {player.side} to win the game.',  # noqa
+                    f'Who should be excluded from the game in order to help {player.side} to win the game.'  # noqa
+                    f'Please select the name of the player from the following list:',  # noqa
                     '\n'.join([f'- {name}' for name in alive_player_names]),  # noqa
                     'Think about who is in which role, reasoning step by step.',  # noqa
-                    'The conclusion should be output explicitly.',
+                    'The conclusion must be simple and explicit like "PlayerX should be excluded.".',  # noqa
                 ]),
                 player,
                 silent=silent,
@@ -330,12 +361,23 @@ class DefaultGameMaster(BaseGameMaster):
             if (ngt_vote := p.act_in_night(self))
         }
 
-    def exclude_players_following_votes(self, votes: dict[str, str], announce_votes: bool = True) -> str:   # noqa
+    def exclude_players_following_votes(
+        self,
+        votes: dict[str, str],
+        announce_votes: bool = True,
+    ) -> str | None:   # noqa
         self._logger.debug('Exclude players following votes')
         # count votes
         count: dict[str, int] = {}
         for vote in votes.values():
-            count[vote] = count.get(vote, 0) + 1
+            # FIXME: the following line is a workaround to prevent the non-player is voted  # noqa
+            if vote in {p.name for p in self.alive_players}:
+                count[vote] = count.get(vote, 0) + 1
+        if not count:
+            return '\n'.join([
+                'No one is excluded.',
+                'Think about what has happened and what you should do in the next action.',  # noqa
+            ])
         max_n_votes = max(count.values())
         # extract
         candidates = [name for name, n_votes in count.items() if n_votes == max_n_votes]  # noqa
