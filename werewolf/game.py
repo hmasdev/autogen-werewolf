@@ -3,13 +3,13 @@ import logging
 from typing import Iterable
 
 import autogen
-import click
 from langchain_openai import ChatOpenAI
 
 from .const import DEFAULT_MODEL, EGameMaster
 from .config import GameConfig
 from .game_master.base import BaseGameMaster
 from .utils.openai import create_chat_openai_model
+from .utils.printer import create_print_func
 
 
 def game(
@@ -23,10 +23,12 @@ def game(
     open_game: bool = False,
     config_list=[{'model': DEFAULT_MODEL}],
     llm: ChatOpenAI | str | None = None,
+    printer: str = 'click.echo',
     log_file: str = 'werewolf.log',
     logger: logging.Logger = logging.getLogger(__name__),
 ):
     # preparation
+    print_func = create_print_func(printer)
     llm = create_chat_openai_model(llm)
     master = BaseGameMaster.instantiate(
         EGameMaster.Default,  # TODO
@@ -62,7 +64,7 @@ def game(
         days = range(len(master.alive_players))
     for _ in days:
         # announce day
-        click.echo(f'=============================== Day {master.day} (Daytime) ================================')  # noqa
+        print_func(f'=============================== Day {master.day} (Daytime) ================================')  # noqa
         master.announce(
             '\n'.join([
                 f'Day {master.day}: Daytime.',
@@ -77,7 +79,7 @@ def game(
         votes = master.daytime_discussion()
         # exclude from the game
         excluded_result = master.exclude_players_following_votes(votes)
-        click.echo('\n'.join([
+        print_func('\n'.join([
             '============================== Excluded result ==============================',  # noqa
             str(excluded_result),
             '=============================================================================',  # noqa
@@ -89,7 +91,7 @@ def game(
             break
             # announce day
         # announce night
-        click.echo(f'================================ Day {master.day} (Nighttime) ================================')  # noqa
+        print_func(f'================================ Day {master.day} (Nighttime) ================================')  # noqa
         master.announce(
             '\n'.join([
                 f'Day {master.day}: Nighttime.',
@@ -104,7 +106,7 @@ def game(
         votes = master.nighttime_action()
         # exclude from the game
         excluded_result = master.exclude_players_following_votes(votes, announce_votes=False)  # noqa
-        click.echo('\n'.join([
+        print_func('\n'.join([
             '============================== Excluded result ==============================',  # noqa
             str(excluded_result),
             '=============================================================================',  # noqa
