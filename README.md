@@ -2460,6 +2460,8 @@ classDiagram
    IWerewolfGameMaster --|> GroupChatManager
 ```
 
+NOTE: `IWereWolfPlayer` and `IWerewolfGameMaster` are NOT interfaces strictly, because they inherit from `ConversableAgent` and `GroupChatManager` respectively. They are introduced to avoid circular dependencies.
+
 ## LICENSE
 
 [MIT](https://github.com/hmasdev/autogen-werewolf/tree/main/LICENSE)
