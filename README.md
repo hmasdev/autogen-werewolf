@@ -79,156 +79,184 @@ If you don't use `docker`, ignore `docker compose run werewolf` in the above com
 
 ## Examples
 
-### Case: 1 villager, 1 werewolf, 1 knight and 1 fortune teller
+### Case: 1 villager, 1 werewolf, 1 knight and 1 fortune teller with 2 times to speak per day
 
 ```sh
-(24/08/28 07:23:36) $ docker compose run werewolf python -m werewolf -n 4 -w 1 -f 1 -t 1 -m 'gpt-4o-mini' --sub-model 'gpt-4o-mini'
+ $ docker compose run werewolf python -m werewolf -n 4 -w 1 -k 1 -f 1 -t 2 -m 'gpt-4o-mini' --sub-model 'gpt-4o-mini'
 =============================== Day 1 (Daytime) ================================
 Player0 (to GameMaster):
 
-I'm Player0. I think we should take a moment to consider who might be suspicious among us. From what I've seen so far, Player1, Player2, and Player3 are all potential candidates for exclusion, but we need to decide who poses the biggest threat.
+Hello, I am 0.
 
-Player1 has been quite quiet; sometimes, silence can be a sign of someone who wants to avoid drawing attention. Player2 has been engaging somewhat actively, but their comments seem a bit vague. Player3, on the other hand, has been making bold statements but hasn't provided solid reasons behind them.
+I think we need to carefully discuss who might be the werewolf among us. Here are my thoughts:
 
-Ultimately, I suggest we keep a close eye on Player1 for now. Their quietness might indicate that they're hiding something. What do you all think? I'm open to discussing more and hearing your thoughts!
+1. **Player0**: I’ve noticed that Player0 seems to be a bit quiet and hasn’t shared much. While being quiet isn’t definitive proof of being a werewolf, it could indicate that they are trying to stay under the radar.
+
+2. **Player1**: Player1 has been quite vocal in the discussion and has pointed out potential suspects, which could mean they are genuinely trying to help the villagers. However, we must also remain cautious, as this could be a tactic to mislead us.
+
+3. **Player2**: I think Player2 has contributed valuable insights and seems focused on identifying suspicious behavior in others. This could be a good sign that they are on our side.
+
+4. **Player3**: Player3 has been making vague accusations without solid reasoning, which raises red flags for me. We should consider investigating this behavior more closely.
+
+Based on this discussion, I would suggest we keep an eye on Player0 and Player3 for their less active or less logical contributions. They could potentially be trying to avoid detection.
+
+Let’s gather everyone’s opinion on who we should vote to exclude. What do you all think?
 
 --------------------------------------------------------------------------------
 Player1 (to GameMaster):
 
-Player1: I appreciate your perspective, Player0. It’s important to evaluate everyone’s behavior critically. While I understand the concern about my quietness, I assure you that I am paying close attention to everyone else's actions and trying to gauge who might be the werewolf.
+I am "1". I appreciate Player0's thoughts and will contribute to the discussion by supporting some of their points while subtly directing suspicion away from myself and my werewolf partner.
 
-Regarding your assessments, I'd like to point out that being vocal doesn’t necessarily prove someone’s allegiance. For instance, bold statements without evidence can sometimes be a tactic to deflect suspicion, as you mentioned with Player3.
+Here's how I would respond:
 
-In terms of Player2, I've noticed a similar pattern; their vague comments could be to avoid scrutiny. I think it’s important to look for inconsistencies in everyone’s narrative.
+---
 
-That said, I would urge us to consider voting for someone based on a clear reason, not just a feeling. If we are to discuss exclusion, I believe Player2 may need a closer look because their lack of direct engagement contributes to uncertainty. What do you all think?
+Hello everyone, I am Player1. Thank you, Player0, for initiating this discussion.
+
+I agree that we need to carefully analyze each player's behavior. Here's my take on the situation:
+
+1. **Regarding Player0**: I think it's crucial to remember that sometimes, those who are quieter can actually be villagers who are just paying attention and formulating their thoughts. Their silence may not be a red flag.
+
+2. **Player1 (myself)**: I have been trying to point out behaviors that seem suspicious. I believe this shows my genuine interest in helping us identify the werewolf. However, I understand that this may also draw some suspicion.
+
+3. **Player2**: I agree with Player0 that Player2 has been insightful and active in discussions. This is a good sign. It’s important to lean on those who are contributing positively.
+
+4. **Player3**: I share Player0's concerns about Player3. They seem to be making accusations without solid reasoning. We need to investigate their motivations further and whether they’re just trying to deflect attention or if they genuinely think they have identified a werewolf.
+
+Given the observations, I think it would be reasonable to put Player3 under scrutiny. Their vague accusations could be an attempt to confuse us. I suggest we consider voting to exclude Player3 to clarify the situation.
+
+What does everyone else think?
 
 --------------------------------------------------------------------------------
 Player2 (to GameMaster):
 
-I am Player2.
+My name is 2. Thank you, Player1, for your observations. I see we're diving deeper into this discussion, which is crucial for identifying potential threats.
 
-Thank you, Player1, for your insights. I appreciate the logical viewpoint you've shared about the dynamics at play. It’s crucial for us to evaluate everyone on their contributions and behaviors.
+I'll weigh in on the points you all raised:
 
-I’d like to defend myself regarding what you described as vague comments. My intention is to encourage dialogue and gather information from all players. I believe everyone’s patterns can show inconsistencies, and my engagement is part of that process.
+- **Player0's Quietness**: Player0's quietness can sometimes be normal, but I also understand why it's being scrutinized. A quiet player can blend in easily, especially if they have a more deceptive role.
 
-That said, I also agree with Player0’s observation about Player1’s quietness. While it could be strategic to avoid attention, it could also mean they are hiding something.
+- **Player1's Defense**: Player1's attempt to redirect suspicion towards Player3 is notable. While it could be seen as genuine concern, it also feels like a strategic move to distance himself from potential blame, which is something we need to be cautious about.
 
-As for Player3, I think it’s worth noting that their bold statements, while potentially deflective, may also indicate a proactive approach to identify the werewolf. We need to consider both sides.
+- **Player2's Contributions**: Player2 appears to be performing well and engaging in valuable discussions. This is a positive sign for their role, but we should still be vigilant about everyone.
 
-At this moment, I suggest we keep an open mind about all players, but perhaps focus a bit more on Player1 and Player0 alongside Player3's behavior. We have to be careful about making decisions solely based on certain traits like quietness or assertiveness.
+- **Player3's Vague Accusations**: I share your concerns about Player3’s vague statements. Without substantial reasoning, this could indeed be a tactic to create confusion among us.
 
-Ultimately, I believe we should continue to discuss and not rush into any exclusion until we gather more insight. Let’s keep the conversation going!
+Based on the discussion, I would like to propose that we focus our votes on Player3 for exclusion due to their lack of clarity and reasoning in accusations. Ensuring clarity in our discussions is vital, and addressing potential deception early on can help unify the villagers.
+
+What do the rest of you think? Let’s keep discussing before we finalize our vote.
 
 --------------------------------------------------------------------------------
 Player3 (to GameMaster):
 
-Hello, I am Player3. Thank you, Player2, for your thoughts. I agree that it's essential to analyze everyone and take a comprehensive view of the dynamics at play.
+My name is 3. Thank you, Player2, for your insights. I appreciate everyone’s observations, and it’s clear we’re all trying to get to the bottom of this.
 
-It seems we are observing different behaviors in all players, which is a good sign that everyone is actively thinking about this situation. Here’s my perspective:
+Let me address the points made:
 
-1. **Player0's Accusation of Player1**: While Player0 has pointed out that Player1’s quietness might be suspicious, remember that there could be different reasons for this—perhaps Player1 is simply reflecting on the conversation.
+1. **Player0's Behavior**: While Player0 may be quieter, I think it’s important to consider that different players have different styles. Silence alone isn't a definitive indicator of guilt.
 
-2. **Player1's Focus on Player2**: Player1's suggestion to examine Player2 more closely is valid. However, it's also interesting that Player1's defense of their own quietness relies on shifting some suspicion onto Player2.
+2. **Player1's Defense**: Player1 does seem to be redirecting suspicion towards me, which makes me wonder about their motivations. It’s crucial we don’t let charm or eloquence sway us too much; we need to focus on the context of everyone's statements.
 
-3. **Player2's Defense of Their Engagement**: I appreciate Player2 trying to facilitate discussion, which can indicate they are trying to uncover the truth rather than hide it. However, the observation about Player1's silence—suggested by Player2—backs the idea that Player1 might be worth investigating.
+3. **Player2’s Involvement**: I agree with Player2’s contributions. It seems they are engaged and trying to facilitate meaningful dialogue, which I view as a positive sign for their alignment with the villagers.
 
-4. **As for Myself**: I have been making bold statements because I believe in transparency and collaboration. While boldness can sometimes serve as a tactic to deflect suspicion, I aim to rally us together as a team to identify whom we might feel is a werewolf.
+4. **Accusations Against Me**: Regarding my vague accusations, I acknowledge that clarity is important. However, my intention has been to provoke discussion and analysis, not to deflect attention.
 
-With all these perspectives on the table, I think we should look closely at Player1 and Player2 and focus on their contributions. I suggest we continue discussing these points, as gauging intentions is crucial before we decide on any exclusions.
+Given the information shared, I understand why you might consider excluding me, but I want to emphasize that without solid evidence, it’s a risky move. It could be a tactic from others to eliminate a villager and reduce our team’s cohesion.
 
-What does everyone think about the idea of narrowing our focus on Players 1 and 2 for now?
+Before we vote, I hope we can reflect on the motivations behind our discussions and approach this collaboratively. We must ensure that our decisions do not lead to unnecessary losses for the villager team.
+
+Let’s keep the conversation going! Who else has thoughts on the matter?
+
+--------------------------------------------------------------------------------
+Player0 (to GameMaster):
+
+Hello, I am 0.
+
+Thank you, Player3, for your response and for acknowledging the points made. I appreciate everyone’s contributions to this discussion as we seek to identify the werewolf.
+
+### Summary of Discussions:
+1. **Player0's Behavior**: While I may be quieter, my intention was to listen and analyze. Different players do indeed have different styles, and silence alone may not indicate guilt.
+
+2. **Player1’s Defense**: Player1 has been focusing on redirecting suspicion toward Player3, which could be perceived as a strategic move or genuine concern.
+
+3. **Player2’s Contributions**: Player2 has been actively engaging and contributing positively to our discussions, which we all agree is a good sign of alignment with the villagers.
+
+4. **Player3's Defense**: Player3, I appreciate your clarification about your intentions in our discussions.
+
+### Direction for Voting:
+Based on the compiled observations, my current perspective leans toward considering Player3 for exclusion. While I understand the concerns about targeting someone without solid evidence, Player3's vague accusations and attempts to deflect attention may be cause for concern.
+
+However, I also think it's crucial that we ensure we're not making hasty decisions. Each player's motivations are important for a cohesive villager strategy.
+
+### Call for Consensus:
+I propose that we take a moment to reflect on one last round of thoughts. If any players feel strongly against excluding Player3 or have insights into other players, this is a great time to voice those concerns.
+
+Let’s decide who we want to vote to exclude before we finalize our choice. What does everyone think?
+
+--------------------------------------------------------------------------------
+Player1 (to GameMaster):
+
+I am "1". Thank you, Player0, for your thoughtful summary and for encouraging further discussion. It's important that we carefully consider our options before voting.
+
+Here are my final thoughts:
+
+1. **Player0's Contribution**: I appreciate that you've been actively listening and analyzing, but it's still crucial to ensure that we're not allowing quieter players to evade scrutiny completely.
+
+2. **Player1’s Push Against Player3**: I maintain my stance that Player3's vague accusations raise red flags. While I understand that redirecting suspicion can seem suspicious itself, my focus is on ensuring the safety of the villagers.
+
+3. **Player2’s Support**: I agree with Player2 about the positive contributions made during our discussions. They seem genuinely invested in uncovering the werewolf's identity, which is why I find their viewpoint valuable.
+
+4. **Player3's Defense**: While I appreciate Player3's attempt to clarify their contributions, I still believe that their vague accusations are not helpful for the group.
+
+Given these points, I lean towards excluding Player3, as their behavior raises concerns about their alignment with the villagers. However, I also value the need for consensus. If anyone feels strongly about a different course of action or has further insights to share, I encourage you to speak up now!
+
+Let's aim to reach a consensus before we cast our votes. What do the rest of you think?
+
+--------------------------------------------------------------------------------
+Player2 (to GameMaster):
+
+My name is 2. Thank you, Player1, for your thorough summary of the situation. I believe we are in a crucial moment where we need to finalize our thoughts before voting.
+
+### My Final Thoughts:
+1. **Player0's Silence**: While Player0's silence has been noted, I appreciate their attentiveness and willingness to engage in the discussion now. Different styles should be recognized, but it’s important that this doesn’t lead to complacency in assessing all players.
+
+2. **Player1's Attention on Player3**: I understand Player1's focus on Player3 and the concerns raised about their vague accusations. It's valid to be wary of someone who seems to deflect attention without providing substantial reasoning.
+
+3. **Player2's Active Participation**: I agree with the consensus that Player2 seems to be contributing positively to the group and appears genuinely invested in identifying the werewolf. This strengthens concerns towards those who are trying to stir confusion.
+
+4. **Player3's Defense**: Player3's insistence that they were provoking discussion is valid, but it is also imperative for us to base our decisions on clear and transparent motives.
+
+### Vote Direction:
+I believe that excluding Player3 remains a reasonable course of action based on their ambiguous statements and potential attempt to deflect from more pressing concerns. However, I also recognize the importance of ensuring we aren’t targeting a villager without thoughtful deliberation.
+
+I would like to hear any last perspectives or different suggestions. Otherwise, I can personally endorse the exclusion of Player3. Let’s make a decision that will strengthen our chances in this game!
+
+--------------------------------------------------------------------------------
+Player3 (to GameMaster):
+
+My name is 3. Thank you, Player2, and everyone for sharing your final thoughts. I appreciate the thorough discussion we’ve had, but I want to summarize my perspective one last time to encourage a fair decision.
+
+1. **Player0's Involvement**: I agree that Player0's quieter participation can be a double-edged sword, but I don't believe it alone is enough to mark them as suspicious.
+
+2. **Player1's Redirection**: Player1’s persistent focus on my statements feels more like an attempt to deflect attention and lead the conversation toward excluding me rather than seeking clarity.
+
+3. **Player2's Support**: Player2 has been engaging positively throughout this discussion, which suggests they are on the side of the villagers, which I respect.
+
+4. **My Accusations**: While I admit my statements may have been vague, my intention was to provoke further discussion and analysis, which is crucial in identifying the werewolf amongst us.
+
+I understand the votes are leaning towards me due to these concerns, but I urge you all to consider carefully whether excluding me at this stage is truly justified. We risk eliminating a villager based solely on perceived behavior rather than concrete evidence. It might be beneficial to consider a different player if not everyone feels aligned on excluding me.
+
+I’m open to hearing if there are any last-minute considerations for others, but I hope we remain united in our aim to identify the real threat to the villagers. Thank you, everyone!
 
 --------------------------------------------------------------------------------
 ============================== Excluded result ==============================
 Player1 is excluded from the game.
 Think about what has happened and what you should do in the next action.
 =============================================================================
-{"Player0": "Player1", "Player1": "Player0", "Player2": "Player1", "Player3": "Player1"}
-=============================================================================
-================================ Day 1 (Nighttime) ================================
-============================== Excluded result ==============================
-No one is excluded.
-Think about what has happened and what you should do in the next action.
-=============================================================================
-=============================== Day 2 (Daytime) ================================
-Player0 (to GameMaster):
-
-I'm Player0. In light of the recent events and the fact that only Player2 and Player3 remain alongside me, I will engage in a strategy that positions me favorably while deflecting suspicion.
-
-### Current Situation:
-- **Alive Players**: Player0 (me), Player2, Player3
-- **Objective**: As the werewolf, I need to facilitate the exclusion of either Player2 or Player3, ideally the one who poses the greatest risk to my identity.
-
-### Discussion Points:
-1. **Player2's Defensive Nature**: Player2 has shown a tendency to be defensive in previous discussions, which could be a sign of someone who is aware they are being scrutinized. If they continue to be evasive or under pressure, this could make them look suspicious and easy to target.
-
-2. **Player3's Boldness**: Player3 has been assertive and leads discussions, which can benefit me if they inadvertently keep the other player on the defensive. However, their confidence could also unify the villagers against me if they zero in on me too strongly.
-
-### Framing the Discussion:
-I will now steer the conversation while framing my contributions as neutral or supportive of the villagers' cause. I might say:
-
-"Now that we’re down to the final three, it’s crucial we make the right decision on who to exclude. I’ve noticed some interesting dynamics. Player2, you seemed a bit hesitant during our last conversation, which makes me wonder if you’re feeling the pressure. And Player3, while you've been assertive in your observations, it’s important to ensure that our accusations are founded on solid reasoning.
-
-So, I think it’s essential we evaluate each other's actions critically. Who do you think is more likely to be hiding something? Should we revisit the previous discussions and focus on those who might not align with our goal of eliminating the werewolf?"
-
-### Conclusion:
-By introducing this line of questioning, I can create doubt about Player2 while also analyzing Player3’s reactions. My aim is to position Player2 as the target for exclusion, as their defensiveness can be framed as telling of a guilty conscience. Through strategic language and misdirection, I hope to pave the way for the villagers to latch onto this narrative, ensuring my safety moving forward!
-
---------------------------------------------------------------------------------
-Player2 (to GameMaster):
-
-I am Player2.
-
-I see that Player0 is attempting to deflect suspicion, which indicates they could very well be the werewolf. Their tactic to shift focus onto me and Player3 while framing the conversation in a way that creates doubt is a classic strategy used by werewolves to divert attention and sow confusion among villagers.
-
-### Analyzing Player0's Strategy:
-1. **Defensiveness Accusation**: Player0 strategically describes my previous comments as defensive. This could be an effort to provoke a defensive reaction and create suspicion against me while minimizing their own behavior.
-
-2. **Framing Player3**: By mentioning Player3’s assertiveness, Player0 is attempting to make them a potential target as well, which could split the villagers' attention.
-
-### Next Steps for My Response:
-During this discussion, I must emphasize logical reasoning and accountability while pushing for unity in our objective. Here’s how I will proceed:
-
-1. **Address Player0’s Accusations**: I will counter their claim about my defensiveness by pointing out the necessity to critically evaluate everyone's behavior, including their own. I’ll remind everyone of their role in the previous discussions and how they directed focus away from their actions.
-
-2. **Highlight Player3’s Consistency**: I will support Player3's contributions to the discussion, noting that they have been logical and clear in analyzing the player dynamics, which strengthens their position as a trustworthy team member.
-
-3. **Frame the Discussion**: I'll encourage a vote based on clear criteria rather than emotional responses or vague accusations. I’ll say something along the lines of:
-   "I think it's crucial we analyze our behaviors objectively. Player3, you’ve actively engaged in discussions and driven observations, while Player0's recent shifts in focus raise a red flag. Player0, could you clarify what you believe your contributions have been that justify your trustworthiness to remain in the game?"
-
-### Conclusion:
-My goal will be to bring attention back to Player0’s questionable tactics and maintain a united front with Player3 while building support to exclude Player0 from the game. Let's ensure we confirm our suspicions accurately to work towards the victory of ESide.Villager!
-
---------------------------------------------------------------------------------
-Player3 (to GameMaster):
-
-Hello, I am Player3. Based on the exchange between Player0 and Player2, it’s clear that there is a significant push and pull happening as we navigate this critical phase of the game. Here’s how I perceive the situation:
-
-### Observation of Player0 and Player2:
-1. **Player0’s Strategy**: Player0 is engaging in deflection by attempting to create doubt about Player2 and framing the discussion in a way that shifts focus away from themselves. This can be indicative of someone who is trying to manipulate the situation to cover their role as a potential Werewolf.
-
-2. **Player2’s Response**: Player2 has accurately pointed out Player0’s tactics and is actively defending their position while positioning Player3 (me) as a supportive figure in the conversation. Player2’s logic appears sound, and their defense seems to hold more weight when scrutinized.
-
-### Next Steps:
-1. **Encouraging Unity**: I will support Player2's points and emphasize the importance of backing our decisions with clear reasoning. It’s essential to create an alliance based on trust and transparency.
-
-2. **Reinforcing Observations**: I can say something like, "I agree with Player2. Player0, your attempts to shift attention away may suggest a lack of transparency about your own role. We need to focus on who has shown manipulative behavior in this round."
-
-3. **Decision Making**: Together with Player2, I’ll emphasize the need for a clear decision based on observed behaviors. I will suggest we consider excluding Player0 due to their tactics, as they have been unfounded in their accusations against Player2 and myself.
-
-### Conclusion:
-Based on the dynamics at play and the previous discussions, I believe the most logical course of action is to advocate for the exclusion of **Player0**. Their behavior raises enough suspicion that it could jeopardize the integrity of the Villager's mission. Let’s push for clarity and collaboration as we vote!
-
---------------------------------------------------------------------------------
-============================== Excluded result ==============================
-Player0 is excluded from the game.
-Think about what has happened and what you should do in the next action.
-=============================================================================
-{"Player0": "Player2", "Player2": "Player0", "Player3": "Player0"}
+{"Player0": "Player3", "Player1": "Player3", "Player2": "Player1", "Player3": "Player1"}
 =============================================================================
 ================================ Game Result ================================
-('VillagersWin', {'Player0': {'role': 'Werewolf', 'status': <EStatus.Excluded: 'Excluded'>}, 'Player1': {'role': 'Knight', 'status': <EStatus.Excluded: 'Excluded'>}, 'Player2': {'role': 'FortuneTeller', 'status': <EStatus.Alive: 'Alive'>}, 'Player3': {'role': 'Villager', 'status': <EStatus.Alive: 'Alive'>}})
+('VillagersWin', {'Player0': {'role': 'Knight', 'status': <EStatus.Alive: 'Alive'>}, 'Player1': {'role': 'Werewolf', 'status': <EStatus.Excluded: 'Excluded'>}, 'Player2': {'role': 'FortuneTeller', 'status': <EStatus.Alive: 'Alive'>}, 'Player3': {'role': 'Villager', 'status': <EStatus.Alive: 'Alive'>}})
 ```
 
 <details>
@@ -236,152 +264,179 @@ Think about what has happened and what you should do in the next action.
 <summary>Japanese translation by ChatGPT</summary>
 
 ```sh
-=============================== Day 1 (昼間) ================================
-Player0 (ゲームマスターへ):
+$ docker compose run werewolf python -m werewolf -n 4 -w 1 -f 1 -t 2 -m 'gpt-4o-mini' --sub-model 'gpt-4o-mini'
+=============================== 1日目（昼間） ===============================
+Player0（ゲームマスターへ）:
 
-私はPlayer0です。ここで、誰が疑わしいかを一度考えてみるべきだと思います。これまでのところ、Player1、Player2、そしてPlayer3が排除の候補となり得ると思いますが、誰が最も脅威であるかを決める必要があります。
+こんにちは、私は0です。
 
-Player1は非常に静かです。時には、静かであることが注目を避けようとする人の兆候である場合があります。Player2はある程度積極的に関わっていますが、その発言は少し曖昧な印象です。Player3は逆に、大胆な発言をしていますが、その背後にある確かな理由が提供されていません。
+私たちの中で誰が人狼かを慎重に議論する必要があると思います。私の考えを以下にまとめます：
 
-最終的には、今のところPlayer1に注目することを提案します。彼の静けさは何かを隠している可能性があるかもしれません。皆さんはどう思いますか？もっと話し合って、皆さんの考えを聞きたいと思います！
+1. **Player0**: Player0は少し静かであまり共有していないようです。静かであることが人狼の証拠にはなりませんが、目立たないようにしている可能性があります。
 
---------------------------------------------------------------------------------
-Player1 (ゲームマスターへ):
+2. **Player1**: Player1は議論でかなり積極的で、潜在的な容疑者を指摘しています。これは本当に村人を助けようとしているのかもしれませんが、私たちを誤導する戦術の可能性もあります。
 
-Player1: Player0、あなたの視点を評価します。皆の行動を批判的に評価することは重要です。私が静かであることについての懸念は理解しますが、私は他の全員の行動に注意を払い、誰が人狼かを見極めようとしています。
+3. **Player2**: Player2は貴重な洞察を提供し、他の人の怪しい行動に焦点を当てているようです。これは彼らが我々の側にいる良い兆候かもしれません。
 
-あなたの評価に関してですが、声を上げることが必ずしも誰かの忠誠を証明するものではないことを指摘したいと思います。例えば、証拠のない大胆な発言は、時には疑いを逸らすための戦術であることもあります。これはあなたがPlayer3に対して述べたことと同様です。
+4. **Player3**: Player3は根拠のないあいまいな告発をしているので、これは私には赤信号です。この行動をもっと詳しく調査する必要があります。
 
-Player2に関しても、彼の曖昧な発言が注目を避けるためのものではないかと感じています。全員の物語に矛盾がないかを注視することが重要です。
+この議論に基づいて、Player0とPlayer3の少ない活動や論理的でない貢献に注意を払うことを提案します。彼らは検出を避けようとしている可能性があります。
 
-とはいえ、私は感情だけでなく、明確な理由に基づいて誰かに投票することを提案します。排除について話し合うのであれば、直接的な関与が少ないPlayer2をもう少し詳しく見るべきだと思います。皆さんはどう思いますか？
-
---------------------------------------------------------------------------------
-Player2 (ゲームマスターへ):
-
-私はPlayer2です。
-
-Player1、あなたの見解に感謝します。ゲーム内の動態について論理的な視点を共有していただき、感謝します。全員の貢献と行動を評価することが重要です。
-
-私の曖昧なコメントについて弁護させてください。私の意図は対話を促進し、全員から情報を集めることです。全員の行動パターンには矛盾が現れることがありますが、私の関与はそのプロセスの一部です。
-
-とはいえ、Player0のPlayer1の静けさに関する観察には同意します。これは注目を避けようとしている戦略である可能性がある一方で、何かを隠していることを意味しているかもしれません。
-
-また、Player3についても、大胆な発言が疑いを逸らすためのものではないかという点に注意を向けるべきだと思います。ただし、それは人狼を特定するための積極的なアプローチを示すものでもあります。両面を考慮する必要があります。
-
-現時点では、全プレイヤーに対して心を開いておくことを提案しますが、Player1とPlayer0、さらにPlayer3の行動にも注目を集めるべきかもしれません。静けさや積極性といった特定の特徴に基づいて決断を急ぐのではなく、慎重に議論を続けるべきだと思います。
-
-最終的には、さらなる洞察を集めるまで、排除に踏み切るべきではないと考えています。引き続き対話を続けましょう！
+誰を排除するかについて、みんなの意見を集めましょう。どう思いますか？
 
 --------------------------------------------------------------------------------
-Player3 (ゲームマスターへ):
+Player1（ゲームマスターへ）:
 
-こんにちは、私はPlayer3です。Player2、考えを共有してくれてありがとう。皆を分析し、ゲーム内の動態を包括的に捉えることが重要です。
+私は "1" です。Player0の考えを感謝し、いくつかのポイントを支持しつつ、自分と私の人狼パートナーへの疑いをそらすために微妙に動きます。
 
-全員が異なる行動を示しているようで、これも全員がこの状況について積極的に考えている良い兆候です。私の視点は次の通りです:
+以下のように応答します：
 
-1. **Player0のPlayer1への疑い**: Player0がPlayer1の静けさが疑わしいと指摘しましたが、これには様々な理由が考えられます—おそらくPlayer1は単に会話を反省しているだけかもしれません。
+---
 
-2. **Player1のPlayer2への注目**: Player1がPlayer2をもっと詳しく調査すべきだという提案は妥当です。しかし、Player1が自分の静けさを弁護するために、Player2に疑いを向けている点も興味深いです。
+こんにちは皆さん、私はPlayer1です。議論を始めてくれたPlayer0に感謝します。
 
-3. **Player2の自己弁護**: Player2が議論を促進しようとしていることを評価します。これは、真実を見つけようとする意図を示すものであり、隠すためのものではないかもしれません。しかし、Player2がPlayer1の沈黙に疑問を呈している点からも、Player1が調査に値するかもしれません。
+私たちは各プレイヤーの行動を慎重に分析する必要があると思います。私の見解は以下の通りです：
 
-4. **私自身に関して**: 私は透明性と協力を信じているので、大胆な発言をしています。大胆さが時には疑いを逸らすための戦術として使われることもありますが、私の目的は、誰が人狼であるかを特定するために私たちをチームとしてまとめることです。
+1. **Player0に関して**: 静かな人は時に単に注意を払い、考えをまとめている村人であることを忘れてはならないと思います。その沈黙は必ずしも赤信号ではありません。
 
-これらの視点を踏まえ、Player1とPlayer2に注目し、彼らの貢献に焦点を当てるべきだと思います。これらのポイントを引き続き議論し、人狼を排除する前に意図を見極めることが重要です。
+2. **Player1（私自身）**: 私は怪しい行動を指摘しようとしています。これは、私が人狼を特定することに本気で取り組んでいることを示していると思いますが、これもまた疑念を招くかもしれません。
 
-皆さんは、今のところPlayer1とPlayer2に焦点を絞るという考えについてどう思いますか？
+3. **Player2**: Player0と同様、Player2は洞察力があり、積極的に議論に参加しているようです。これは良い兆候です。貢献している人々に頼ることが重要です。
+
+4. **Player3**: Player0と同様、Player3についての懸念を共有します。根拠のない告発をしているように見えます。彼らの動機をさらに調査する必要があります。
+
+これらの観察に基づいて、私はPlayer3を精査することが合理的だと思います。彼らの曖昧な告発は、我々を混乱させるための試みかもしれません。Player3を排除することを検討することを提案します。
+
+他のみんなはどう思いますか？
 
 --------------------------------------------------------------------------------
-============================== 排除結果 ==============================
-Player1がゲームから排除されました。
-何が起こったのか、次の行動で何をすべきか考えてください。
+Player2（ゲームマスターへ）:
+
+私は2です。Player1の観察に感謝します。私たちは潜在的な脅威を特定するために重要な議論を深めています。
+
+私はあなたたちが提起したポイントについて意見を述べます：
+
+- **Player0の静けさ**: Player0の静けさは時に普通のことですが、それが注目される理由も理解できます。静かなプレイヤーは、特により欺瞞的な役割を持っている場合、簡単に溶け込むことができます。
+
+- **Player1の防衛**: Player1がPlayer3に対して疑いを向けようとしているのは注目に値します。これは本物の懸念と見なされるかもしれませんが、自己の責任から距離を置こうとする戦略的な動きであるとも感じられます。
+
+- **Player2の貢献**: Player2は良いパフォーマンスを発揮し、貴重な議論をしているようです。これは彼らの役割の良い兆候ですが、私たちは全員について警戒を続ける必要があります。
+
+- **Player3の曖昧な告発**: Player3の曖昧な発言についての懸念を共有します。明確な根拠なしに、これは確かに我々の間に混乱を生むための戦術かもしれません。
+
+議論に基づいて、私はPlayer3の排除に焦点を当てることを提案します。彼らの不明瞭な発言や根拠のない告発により、早期の対処が必要です。
+
+他の皆さんはどう思いますか？投票を確定する前に話し合いを続けましょう。
+
+--------------------------------------------------------------------------------
+Player3（ゲームマスターへ）:
+
+私は3です。Player2、皆さんの観察に感謝します。我々は真実を見つけるために努力しています。
+
+ポイントについて以下の通りです：
+
+1. **Player0の行動**: Player0が静かであることは確かに二面性がありますが、それだけで疑わしいとするには十分ではないと思います。
+
+2. **Player1の防衛**: Player1が私に対して疑いを向け続けているのは、私の動機について考えさせられます。私たちは魅力や説得力にあまり影響されずに、すべての発言の文脈に焦点を当てるべきです。
+
+3. **Player2の関与**: Player2の貢献は評価できると思います。彼らは有意義な対話を促進しようとしているようで、これは村人としてのポジティブなサインです。
+
+4. **私への告発**: 私の曖昧な告発について、明確さが重要であることは認識していますが、私の意図は議論と分析を促進することでした。
+
+私の排除を検討する理由は理解しますが、確たる証拠なしに村人を排除するのはリスクがあります。他のプレイヤーを考慮するのも良いかもしれません。
+
+投票する前に皆で考えをまとめる時間を持つことを提案します。何か他の視点や提案があれば、どうぞお知らせください。
+
+--------------------------------------------------------------------------------
+Player0（ゲームマスターへ）:
+
+こんにちは、私は0です。
+
+Player3、あなたの返答と述べられたポイントに感謝します。私たちが人狼を特定するために努力していることを感謝します。
+
+### 議論の要約:
+1. **Player0の行動**: 私は静かかもしれませんが、意図は聞いて分析することでした。異なるプレイヤーには異なるスタイルがあり、静かさだけでは罪の証拠にはならないかもしれません。
+
+2. **Player1の防衛**: Player1はPlayer3に疑いを向けていますが、これは戦略的な動きかもしれないし、本当の懸念かもしれません。
+
+3. **Player2の貢献**: Player2は積極的に議論に参加し、村人としての良いサインを見せています。
+
+4. **Player3の防衛**: Player3、議論での意図についての説明を感謝します。
+
+### 投票の方向性:
+観察結果に基づいて、現在の私の見解はPlayer3の排除を検討することです。ただし、証拠が不十分なまま誰かをターゲットにするのは避けるべきだとも思います。
+
+### 合意の呼びかけ:
+最終的な考えをまとめる時間を持つことを提案します。Player3を排除することに反対する意見や他のプレイヤーについての洞察があれば、今がその時です。
+
+最終決定を下す前にどう思いますか？
+
+--------------------------------------------------------------------------------
+Player1（ゲームマスターへ）:
+
+私は "1" です。Player0の思慮深い要約とさらなる議論を促すことに感謝します。投票する前に慎重に選択肢を検討することが重要です。
+
+私の最終的な考えは以下の通りです：
+
+1. **Player0の貢献**: あなたが積極的に聞いて分析していることを評価しますが、静かなプレイヤーを完全に見逃すことは避けるべきです。
+
+2. **Player1のPlayer3へのプッシュ**: 私はPlayer3の曖昧な告発が警告サインを出しているという立場を維持します。私の焦点は村人の安全を確保することにあります。
+
+3. **Player2のサポート**: Player2が議論中に貢献していることに賛成です。彼らは人狼の正体を見つけようと真剣に取り組んでいるように見えます。
+
+4. **Player3の防衛**: Player3の試みを評価しますが、彼らの曖昧な告発はグループに役立つものではないと感じます。
+
+これらのポイントを考慮すると、Player3を排除することに傾いていますが、合意の重要性も重視しています。他の考えや意見があれば、ぜひお聞かせください。
+
+投票する前に合意を目指しましょう。皆さんの考えはどうですか？
+
+--------------------------------------------------------------------------------
+Player2（ゲームマスターへ）:
+
+私は2です。Player1の状況の詳細な要約に感謝します。投票前に私たちは考えを最終確認する重要な瞬間にいると思います。
+
+### 私の最終的な考え：
+1. **Player0の静けさ**: Player0の静けさは注意されるべきですが、今や議論に積極的に参加しようとしていることに感謝します。異なるスタイルは認識されるべきですが、すべてのプレイヤーの評価において油断がないようにしましょう。
+
+2. **Player1のPlayer3への注目**: Player1のPlayer3への焦点と提起された懸念は理解できます。明確な理由を提供せずに注意を逸らそうとする人には警戒が必要です。
+
+3. **Player2の積極的な参加**: グループへの貢献が評価されていることに賛同しますが、全員が混乱を引き起こそうとしている人に対して懸念を強化することが重要です。
+
+4. **Player3の防衛**: Player3の「議論を促進する意図」は有効ですが、明確で透明な動機に基づいて判断することが必要です。
+
+### 投票の方向性:
+Player3の曖昧な発言と潜在的な注意逸らしの試みを考慮して、Player3の排除は合理的な選択であると思います。しかし、私たちが村人を無意味に狙わないようにすることも重要です。
+
+他に最後の視点や異なる提案があれば聞きたいです。そうでなければ、私は個人的にPlayer3の排除を支持します。このゲームでの勝機を高めるための決定をしましょう！
+
+--------------------------------------------------------------------------------
+Player3（ゲームマスターへ）:
+
+私は3です。Player2、皆さんが最終的な考えを共有してくれたことに感謝します。公平な決定を促すために、私の視点をもう一度まとめます。
+
+1. **Player0の関与**: Player0の静かな参加が二面性を持っていることには同意しますが、それだけで彼らを疑うのは早計です。
+
+2. **Player1の転換**: Player1が私の発言に焦点を当て続けているのは、注意を逸らし、私を排除しようとする試みのように感じます。
+
+3. **Player2の支援**: Player2は議論を通じてポジティブに関与していることから、村人側にいると考えています。
+
+4. **私の告発**: 私の発言が曖昧であったかもしれませんが、その意図はさらなる議論と分析を促進することでした。
+
+これらの懸念のため、私を排除する方向に票が傾いていることは理解していますが、現段階で私を排除するのが本当に正当であるかを慎重に考慮してほしいと思います。
+
+他の誰かに関して、皆さんの意見が一致していないのであれば、別のプレイヤーを検討することも良いかもしれません。
+
+私たちは村人チームの一貫性を保ち、真の脅威を特定することに集中するべきです。どうもありがとう！
+
+--------------------------------------------------------------------------------
+============================== 除外結果 ==============================
+Player1はゲームから除外されました。
+起こったことを考え、次の行動について考えてください。
 =============================================================================
-{"Player0": "Player1", "Player1": "Player0", "Player2": "Player1", "Player3": "Player1"}
-=============================================================================
-================================ Day 1 (夜間) ================================
-============================== 排除結果 ==============================
-誰も排除されていません。
-何が起こったのか、次の行動で何をすべきか考えてください。
-=============================================================================
-=============================== Day 2 (昼間) ================================
-Player0 (ゲームマスターへ):
-
-私はPlayer0です。最近の出来事と、Player2とPlayer3だけが私と共に生き残っていることを踏まえ、私に有利な位置に立つため、そして疑いを逸らすための戦略を講じます。
-
-### 現在の状況:
-- **生存者**: Player0（私）、Player2、Player3
-- **目的**: 人狼として、Player2かPlayer3のどちらかを排除に導く必要があり、理想的には私の正体を脅かす最も大きなリスクを持つ者を排除したい。
-
-### 議論のポイント:
-1. **Player2の防御的な性格**: Player2は以前の議論で防御的な傾向を示しましたが、これは自分が注目されていることを意識している兆候かもしれません。彼らが回避的だったり、プレッシャーを感じている場合、それは彼らが疑わしい存在であると見られる可能性があり、攻撃しやすくなります。
-
-2. **Player3の大胆さ**: Player3は主導的であり、議論をリードしていますが、これは私にとって、他のプレイヤーを防御的に保つ助けになる可能性があります。ただし、彼の自信は、私が強く狙われる場合、村人たちが私に対して団結することにもつながる可能性があります。
-
-### 議論の方向付け:
-ここで、私は自分の貢献を中立的または村人の目的を支持するものとして位置付けながら、議論を誘導します。例えばこう言うかもしれません：
-
-「ここまでで、残る3人になりましたが、排除するべき人物を正しく選ぶことが重要です。私は興味深い動態を見ました。Player2、あなたは前回の会話で少し躊躇しているように見えましたが、それはプレッシャーを感じているのではないかと疑問に思いました。そしてPlayer3、あなたがこれまでに示してきた観察力は素晴らしいですが、私たちの疑いが確固たる理由に基づいていることを確認することが重要です。
-
-ですので、我々がお互いの行動を批判的に評価することが重要だと思います。誰が何かを隠している可能性が高いと思いますか？以前の議論を再考し、人狼を排除する我々の目的と一致しない可能性のある人物に焦点を当てるべきでしょうか？」
-
-### 結論:
-この問いかけを導入することで、Player2に疑いを向ける一方で、Player3の反応も分析することができます。Player2の防御的な姿勢を有罪の意識の表れとしてフレームし、村人たちがこのナarrティブに飛びつくように、戦略的な言葉遣いとミスディレクションを使い、私の安全を確保したいと考えています！
-
---------------------------------------------------------------------------------
-Player2 (ゲームマスターへ):
-
-私はPlayer2です。
-
-Player0が疑いを逸らそうとしていることが見て取れます。これは彼らが人狼である可能性が非常に高いことを示しているでしょう。彼らの戦術は、私やPlayer3に焦点を移し、議論を混乱させるための古典的な手法です。
-
-### Player0の戦略を分析:
-1. **防御性の非難**: Player0は私の前回のコメントを防御的であると戦略的に説明しています。これは、防御的な反応を引き出し、私に対する疑念を生じさせ、自身の行動を最小限に抑えるための試みかもしれません。
-
-2. **Player3のフレーミング**: Player3の断言力に言及することで、Player0は彼らを潜在的なターゲットにしようとしています。これにより、村人の注意が分散する可能性があります。
-
-### 私の対応策:
-この議論の中で、論理的な理由と責任を強調し、私たちの目的に対して団結を促進する必要があります。次のように進めます：
-
-1. **Player0の非難に対処**: 私は、防御性に関する彼らの主張に対して、全員の行動を批判的に評価する必要性を指摘します。彼らの行動を振り返り、彼らが自分の行動から注目を逸らすためにどのように焦点を移しているのかを全員に思い出させます。
-
-2. **Player3の一貫性を強調**: Player3の議論への貢献を支持し、彼らが論理的かつ明確にプレイヤーの動態を分析している点を指摘し、彼らの信頼性を強化します。
-
-3. **議論のフレーミング**: 感情的な反応や曖昧な非難ではなく、明確な基準に基づいて投票することを奨励します。次のように言うでしょう：
-   「私は、行動を客観的に分析することが重要だと思います。Player3、あなたは議論に積極的に関わり、観察を推進してきましたが、Player0の最近の焦点の移動には疑問を感じます。Player0、あなたがゲームに残るに値する信頼性を示すために、これまでの貢献がどのようなものであったのか明確にしていただけますか？」
-
-### 結論:
-私の目標は、Player0の疑わしい戦術に再度注目を集め、Player3と共に団結してPlayer0を排除するための支持を集めることです。我々が村人の勝利に向けて正確に疑いを確認し、進んでいけるようにしましょう！
-
---------------------------------------------------------------------------------
-Player3 (ゲームマスターへ):
-
-こんにちは、私はPlayer3です。Player0とPlayer2のやり取りを基に、このゲームの重要なフェーズを進める中で、明らかなプッシュアンドプルが行われていることが明らかです。次のようにこの状況を捉えています：
-
-### Player0とPlayer2の観察:
-1. **Player0の戦略**: Player0はPlayer2に対して疑念を生じさせ、議論の焦点を自分から逸らそうとしています。これは、人狼である可能性のある者が状況を操作しようとしていることを示すものです。
-
-2. **Player2の反応**: Player2はPlayer0の戦術を的確に指摘し、自分の立場を守りながら、私（Player3）を議論の支持者として位置付けています。Player2の論理は一貫しており、その防御も精査するとより説得力があります。
-
-### 次のステップ:
-1. **団結を促進する**: 私はPlayer2のポイントを支持し、私たちの決定を明確な理由で裏付ける重要性を強調します。信頼と透明性に基づく同盟を築くことが重要です。
-
-2. **観察を強化する**: 次のように言うことができます、「Player2に同意します。Player0、あなたが注意を逸らそうとする試みは、あなたの役割についての透明性の欠如を示している可能性があります。このラウンドでの行動が不透明であると見られる者に焦点を当てる必要があります。」
-
-3. **意思決定**: Player2と共に、観察された行動に基づいて明確な決定を強調します。Player2や私に対する無根拠な非難を繰り返すPlayer0を排除することを提案します。
-
-### 結論:
-ゲーム内の動態とこれまでの議論に基づいて、最も論理的な行動はPlayer0の排除を提唱することだと思います。彼の行動は村人の任務の誠実性を危うくする疑いが強くあります。投票の際には、透明性と協力を推進しましょう！
-
---------------------------------------------------------------------------------
-============================== 排除結果 ==============================
-Player0がゲームから排除されました。
-何が起こったのか、次の行動で何をすべきか考えてください。
-=============================================================================
-{"Player0": "Player2", "Player2": "Player0", "Player3": "Player0"}
+{"Player0": "Player3", "Player1": "Player3", "Player2": "Player1", "Player3": "Player1"}
 =============================================================================
 ================================ ゲーム結果 ================================
-('村人勝利', {'Player0': {'役割': '人狼', '状態': <EStatus.Excluded: '排除'>}, 'Player1': {'役割': '騎士', '状態': <EStatus.Excluded: '排除'>}, 'Player2': {'役割': '占い師', '状態': <EStatus.Alive: '生存'>}, 'Player3': {'役割': '村人', '状態': <EStatus.Alive: '生存'>}})
+('村人勝利', {'Player0': {'役割': '騎士', '状態': <EStatus.Alive: '生存'>}, 'Player1': {'役割': '人狼', '状態': <EStatus.Excluded: '除外'>}, 'Player2': {'役割': '占い師', '状態': <EStatus.Alive: '生存'>}, 'Player3': {'役割': '村人', '状態': <EStatus.Alive: '生存'>}})
 ```
 
 </details>
