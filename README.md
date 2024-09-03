@@ -83,6 +83,10 @@ If you don't use `docker`, ignore `docker compose run werewolf` in the above com
 
 This is an example of a werewolf game with 1 villager, 1 werewolf, 1 knight and 1 fortune teller with 2 times to speak per day.
 
+<details>
+
+<summary> Game Log </summary>
+
 ```sh
  $ docker compose run werewolf python -m werewolf -n 4 -w 1 -k 1 -f 1 -t 2 -m 'gpt-4o-mini' --sub-model 'gpt-4o-mini'
 =============================== Day 1 (Daytime) ================================
@@ -260,6 +264,8 @@ Think about what has happened and what you should do in the next action.
 ================================ Game Result ================================
 ('VillagersWin', {'Player0': {'role': 'Knight', 'status': <EStatus.Alive: 'Alive'>}, 'Player1': {'role': 'Werewolf', 'status': <EStatus.Excluded: 'Excluded'>}, 'Player2': {'role': 'FortuneTeller', 'status': <EStatus.Alive: 'Alive'>}, 'Player3': {'role': 'Villager', 'status': <EStatus.Alive: 'Alive'>}})
 ```
+
+</details>
 
 <details>
 
@@ -449,6 +455,10 @@ This is an example of a **opened** werewolf game with 1 villager, 1 werewolf, 1 
 
 "opened" means that you can see the all conversations between players.
 Note that each player cannot know the secret contents of what another player has said, like the conversion between a player and the game master.
+
+<details>
+
+<summary>Game Log</summary>
 
 ```sh
 $ docker compose run werewolf python -m werewolf -n 4 -w 1 -f 1 -t 2 -m 'gpt-4o-mini' --sub-model 'gpt-4o-mini' -o
@@ -1389,6 +1399,8 @@ Think about what has happened and what you should do in the next action.
 ================================ Game Result ================================
 ('WerewolvesWin', {'Player0': {'role': 'Villager', 'status': <EStatus.Excluded: 'Excluded'>}, 'Player1': {'role': 'Werewolf', 'status': <EStatus.Alive: 'Alive'>}, 'Player2': {'role': 'FortuneTeller', 'status': <EStatus.Alive: 'Alive'>}, 'Player3': {'role': 'Knight', 'status': <EStatus.Excluded: 'Excluded'>}})
 ```
+
+</details>
 
 <details>
 
