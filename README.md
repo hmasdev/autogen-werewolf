@@ -2406,6 +2406,60 @@ Player0がゲームから排除されました。
 
 Note that you can use `uv` to develop the project in step 3, 4 and 7.
 
+### Classes
+
+```mermaid
+classDiagram
+
+   class ConversableAgent {
+      <<external>>
+   }
+
+   class IWerewolfPlayer {
+      <<interface>>
+   }
+   class BaseWerewolfPlayer {
+      <<abstract>>
+   }
+
+   class DefaultGameMaster {
+      <<concrete>>
+   }
+   class VillagerRole {
+      <<concrete>>
+   }
+   class WerewolfRole {
+      <<concrete>>
+   }
+   class KnightRole {
+      <<concrete>>
+   }
+   class FortuneTellerRole {
+      <<concrete>>
+   }
+
+   class GroupChatManager {
+      <<external>>
+   }
+   class IWerewolfGameMaster {
+      <<interface>>
+   }
+   class BaseGameMaster {
+      <<abstract>>
+   }
+
+   VillagerRole --|> BaseWerewolfPlayer
+   WerewolfRole --|> BaseWerewolfPlayer
+   KnightRole --|> BaseWerewolfPlayer
+   FortuneTellerRole --|> BaseWerewolfPlayer
+   IWerewolfPlayer <|.. BaseWerewolfPlayer
+   IWerewolfPlayer --|> ConversableAgent
+
+   BaseGameMaster <|-- DefaultGameMaster
+   IWerewolfGameMaster <|.. BaseGameMaster
+   IWerewolfGameMaster --|> GroupChatManager
+```
+
 ## LICENSE
 
 [MIT](https://github.com/hmasdev/autogen-werewolf/tree/main/LICENSE)
