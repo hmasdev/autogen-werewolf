@@ -1,0 +1,62 @@
+name: Check and Fix Version on Push Tags
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  validate-tag:
+    uses: ./.github/workflows/validate-version-workflow-call.yaml
+    with:
+      git-ref: ${{ github.ref }}
+  update-version:
+    needs: [validate-tag]
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Update Tags
+        run: |
+          # Get the latest tag
+          export latest_tag=$(git describe --tags --abbrev=0)
+          export branch_name="bot/update-version-to-$latest_tag"
+          git checkout -b $branch_name
+
+          # Update the version
+          line_before_chg=$(grep -P "version *= *\"v?\d+\.\d+\.\d+.*\"" pyproject.toml)
+          line_after_chg="version = \"$latest_tag\""
+          echo "line_before_chg: $line_before_chg"
+          echo "line_after_chg: $line_after_chg"
+          sed -i -e "s/$line_before_chg/$line_after_chg/g" pyproject.toml
+
+          # Commit and push the changes
+          if [ $(grep "$line_after_chg" pyproject.toml | wc -l) -eq 1 ]; then
+            git config --local user.name "github-actions[bot]"
+            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add pyproject.toml
+            git commit -m "Update version to $latest_tag"
+            git push -u origin $branch_name
+            git tag -d $latest_tag
+            git push --delete origin $latest_tag
+            gh pr create \
+              --title "Update version to $latest_tag" \
+              --body "Update version to $latest_tag" \
+              --base main \
+              --head $branch_name \
+              --assignee hmasdev \
+              --reviewer hmasdev \
+              --label "bot"
+          else
+            echo "Failed to update the version"
+            exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,30 @@
+name: Add Tag on Pull Request by Bot
+
+on:
+  pull_request:
+    types: closed
+
+jobs:
+  add-tag:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add Tag
+        run: |
+          # If the head of PR is "bot/update-version-to-<tag>", then the tag is <tag>
+          if [[ ! ${{ github.head_ref }} =~ ^bot/update-version-to-.*$ ]]; then
+            echo "PR head does not match the pattern 'bot/update-version-to-<tag>'"
+            echo "Skipping..."
+            exit 0
+          fi
+          tag=$(echo ${{ github.head_ref }} | sed -e "s:bot/update-version-to-::g")
+          echo "Tag: $tag"
+
+          # TODO: the branch name depends on check-and-fix-version-on-push-tags.yaml
+
+          # Create a tag
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a $tag -m "Add tag $tag"
+          git push -u origin $tag

@@ -1,0 +1,42 @@
+name: Validate Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      git-ref:
+        required: false
+        type: string
+        default: "main"
+  workflow_call:
+    inputs:
+      git-ref:
+        required: false
+        type: string
+        default: "main"
+
+jobs:
+  validate_version:
+    runs-on: ubuntu-latest
+    env:
+      PRIVATE_REPO_USER: "hmasdev"
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.git-ref }}
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install requirements
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+      - name: Check Version
+        run: |
+          # Check if the tag is the same as pyproject.toml version
+          export tag=$(echo "${{ inputs.git-ref }}" | cut -d / -f 3)
+          echo "extracted tag from git-ref: $tag"
+          grep -P "version *= *\"$tag\"" pyproject.toml
