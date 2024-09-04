@@ -186,7 +186,13 @@ class DefaultGameMaster(BaseGameMaster):
     def reset_temporal_safe_players(self):
         self._temporal_safe_players = []
 
-    def _clean_name(self, name: str, llm: ChatOpenAI | str | None = None, max_retry: int = 5) -> str:  # noqa
+    def _clean_name(
+        self,
+        name: str,
+        question: str,
+        llm: ChatOpenAI | str | None = None,
+        max_retry: int = 5,
+    ) -> str:  # noqa
         logging.debug(f'Clean name: {name}')
         base_llm_chain: Runnable[str, str] = (
             create_chat_openai_model(llm)
@@ -202,15 +208,14 @@ class DefaultGameMaster(BaseGameMaster):
             max_retries=max_retry,
         )
         prompt = '\n'.join([
-            'This is a werewolf game, where any player want to exclude another from the game to win the game.',  # noqa
-            'For example, a more suspicious player is more likely to be excluded from the game.',  # noqa
+            'This is a werewolf game.',  # noqa
             'You are the best at consolidating opinions and drawing conclusions.',  # noqa
-            'Extract the valid name of player which should be excluded from the game, from what a player has said.',  # noqa
-            'Here is the content of what a player has said:',
+            f'Extract the valid name of the player as the answer to "{question}"',  # noqa
+            'Here is the full content of the answer:',
             '```text',
             name,
             '```',
-            'Who do you think should be excluded from the game?',
+            f'Extract the valid name of the player as the answer to "{question}"',  # noqa
         ])
         try:
             cleaned_name: str = chain.parse_with_prompt(
@@ -239,17 +244,20 @@ class DefaultGameMaster(BaseGameMaster):
         with just1turn(self):
             self.send('\n'.join([
                     prompt,
-                    f'Who should be excluded from the game in order to help {player.side} to win the game.'  # noqa
+                    f'Answer the question in order to help {player.side} to win the game.'  # noqa
                     f'Please select the name of the player from the following list:',  # noqa
                     '\n'.join([f'- {name}' for name in alive_player_names]),  # noqa
                     'Think about who is in which role, reasoning step by step.',  # noqa
-                    'The conclusion must be simple and explicit like "PlayerX should be excluded.".',  # noqa
+                    'The conclusion must be simple and explicit like',
+                    '- "PlayerX should be excluded.";',
+                    '- "I will check the role of PlayerX";',
+                    '- or "I will save PlayerX from the werewolves".',
                 ]),
                 player,
                 silent=silent,
             )
         content: str = self.last_message(player).get('content', '')  # noqa
-        return self._clean_name(content)
+        return self._clean_name(content, question=prompt)
 
     def announce(
         self,
