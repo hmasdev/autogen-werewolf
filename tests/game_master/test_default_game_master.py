@@ -171,7 +171,7 @@ def test_DefaultGameMaster__clean_name(
         llm_config=False,
     )
     # execute
-    actual = master._clean_name(input_name)
+    actual = master._clean_name(input_name, question='Who do you think should be excluded from the game?')  # noqa
     # assert
     assert actual == expected
     create_chat_openai_model_mock.assert_called_once()
@@ -204,7 +204,7 @@ def test_DefaultGameMaster__clean_name_all_fail(
         llm_config=False,
     )
     # execute
-    actual = master._clean_name(input_name, max_retry=max_retry)
+    actual = master._clean_name(input_name, max_retry=max_retry, question='Who do you think should be excluded from the game?')  # noqa
     # assert
     assert actual == expected
 
@@ -240,7 +240,7 @@ def test_DefaultGameMaster__clean_name_n_fails(
         llm_config=False,
     )
     # execute
-    actual = master._clean_name(input_name)
+    actual = master._clean_name(input_name, question='Who do you think should be excluded from the game?')  # noqa
     # assert
     assert actual == expected
 
@@ -272,7 +272,7 @@ def test_DefaultGameMaster__clean_name_for_simple_input_integration(
         llm_config=False,
     )
     # execute
-    actual = master._clean_name(input_name)
+    actual = master._clean_name(input_name, question='Who do you think should be excluded from the game?')  # noqa
     # assert
     assert actual == expected
 
@@ -354,7 +354,7 @@ def test_DefaultGameMaster__clean_name_for_more_complicated_integration(
         llm_config=False,
     )
     # execute
-    actual = master._clean_name(input_name)
+    actual = master._clean_name(input_name, question='Who do you think should be excluded from the game?')  # noqa
     # assert
     assert actual == expected
 
@@ -376,7 +376,7 @@ def test_DefaultGameMaster_ask_to_vote(
         llm_config=False,
     )
     master.last_message = mocker.MagicMock(return_value={'content': expected})
-    master._clean_name = mocker.MagicMock(side_effect=lambda _: expected)  # type: ignore # noqa
+    master._clean_name = mocker.MagicMock(side_effect=lambda *args, **kwargs: expected)  # type: ignore # noqa
     player = master.alive_players[0]
     # execute
     actual = master.ask_to_vote(player)
@@ -411,7 +411,7 @@ def test_DefaultGameMaster_ask_to_vote_without_last_message_content(
     actual = master.ask_to_vote(player)
     # assert
     assert actual == expected
-    assert _clean_name_spy.call_args_list == [mocker.call('')]
+    assert _clean_name_spy.call_args_list == [mocker.call('', question='Who do you think should be excluded from the game?')]  # noqa
 
 
 @pytest.mark.parametrize(
