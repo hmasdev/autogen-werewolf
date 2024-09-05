@@ -1,10 +1,9 @@
-# Werewolf Game with `autogen`
+# :wolf: Werewolf Game with `autogen`
 
 ![GitHub top language](https://img.shields.io/github/languages/top/hmasdev/autogen-werewolf)
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/hmasdev/autogen-werewolf?sort=semver)
 ![GitHub](https://img.shields.io/github/license/hmasdev/autogen-werewolf)
 ![GitHub last commit](https://img.shields.io/github/last-commit/hmasdev/autogen-werewolf)
-[![PyPI version](https://badge.fury.io/py/autogen-werewolf.svg)](https://pypi.org/project/autogen-werewolf/)
 ![Scheduled Test](https://github.com/hmasdev/autogen-werewolf/actions/workflows/tests-on-schedule.yaml/badge.svg)
 
 ![HEADER](pics/header.png)
@@ -35,7 +34,7 @@ Note that either of `docker compose` or `python` is required.
    ```bash
    python -m venv venv
    source venv/bin/activate  # or `venv/Scripts/activate` in windows
-   python -m pip install -r requirements.txt
+   python -m pip install .
    ```
 
 ### Enjoy a Werewolf Game
@@ -57,7 +56,7 @@ You can see all options with `--help` option as follows:
 
 ```bash
 $ docker compose run werewolf python -m werewolf --help
-Usage: werewolf.py [OPTIONS]
+Usage: python -m werewolf [OPTIONS]
 
 Options:
   -n, --n-players INTEGER         The number of players. Default is 6.
@@ -66,12 +65,20 @@ Options:
   -f, --n-fortune-teller INTEGER  The number of fortune tellers. Default is 1.
   -t, --n-turns-per-day INTEGER   The number of turns per day. Default is 2.
   -s, --speaker-selection-method ESPEAKERSELECTIONMETHOD
-                                  The method to select a speaker. Default is round_robin.
+                                  The method to select a speaker. Default is
+                                  round_robin.
   -h, --include-human             Whether to include human or not.
   -o, --open-game                 Whether to open game or not.
-  -l, --log TEXT                  The log file name. Default is werewolf%Y%m%d%H%M%S.log
-  -m, --model TEXT                The model name. Default is gpt-3.5-turbo-16k.
-  --sub-model TEXT                The sub-model name. Default is gpt-3.5-turbo-instruct.
+  -l, --log TEXT                  The log file name. Default is
+                                  werewolf%Y%m%d%H%M%S.log
+  -m, --model TEXT                The model name. Default is gpt-4o-mini.
+  -p, --printer TEXT              The printer name. The valid values is in
+                                  ('print', 'click.echo', 'logging.info').
+                                  Default is click.echo.
+  --sub-model TEXT                The sub-model name. Default is gpt-4o-mini.
+  --log-level TEXT                The log level, DEBUG, INFO, WARNING, ERROR
+                                  or CRITICAL. Default is WARNING.
+  --debug                         Whether to show debug logs or not.
   --help                          Show this message and exit.
 ```
 
