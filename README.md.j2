@@ -1,0 +1,315 @@
+# :wolf: Werewolf Game with `autogen`
+
+![GitHub top language](https://img.shields.io/github/languages/top/hmasdev/autogen-werewolf)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/hmasdev/autogen-werewolf?sort=semver)
+![GitHub](https://img.shields.io/github/license/hmasdev/autogen-werewolf)
+![GitHub last commit](https://img.shields.io/github/last-commit/hmasdev/autogen-werewolf)
+![Scheduled Test](https://github.com/hmasdev/autogen-werewolf/actions/workflows/tests-on-schedule.yaml/badge.svg)
+
+![HEADER](pics/header.png)
+
+## Requirements
+
+- OpenAI API Key
+  - [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+
+- (optional) `docker compose`
+- (optional) python >= 3.10
+
+Note that either of `docker compose` or `python` is required.
+
+## How to Use
+
+### Preparation
+
+1. Create `.env` file
+2. Set `OPENAI_API_KEY`:
+
+   ```text
+   OPENAI_API_KEY=HERE_IS_YOUR_OPENAI_API_KEY
+   ```
+
+3. If you don't use `docker` but `python` in your machine, create a virtual environment and install libraries manually:
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # or `venv/Scripts/activate` in windows
+   python -m pip install .
+   ```
+
+### Enjoy a Werewolf Game
+
+The simple use is as follows:
+
+```bash
+docker compose run werewolf python -m werewolf
+```
+
+In this case, you are an observer.
+If you want to join a game, use the flag `-h` or `--include-human`:
+
+```bash
+docker compose run werewolf python -m werewolf -h
+```
+
+You can see all options with `--help` option as follows:
+
+```bash
+$ docker compose run werewolf python -m werewolf --help
+{{ help }}
+```
+
+If you don't use `docker`, ignore `docker compose run werewolf` in the above commands.
+
+## Examples
+{% for example in examples%}
+### {{ example.title }}
+
+{{ example.description }}
+
+<details>
+
+<summary> Game Log </summary>
+
+```sh
+{{ example.log }}
+```
+
+</details>
+{% for lang, translated in example.log_translated.items() %}
+<details>
+
+<summary>{{ lang }} translation by ChatGPT</summary>
+
+```sh
+{{ translated }}
+```
+
+</details>
+{% endfor %}{% endfor %}
+
+## TODO
+
+- [x] fix a bug that a night actions of a knight and a fortune teller are invalid. See [Case2](#case-2-open-game-1-villager-1-werewolf-1-knight-and-1-fortune-teller-with-2-times-to-speak-per-day);
+  - solved by [#12](https://github.com/hmasdev/autogen-werewolf/issues/12) and [#14](https://github.com/hmasdev/autogen-werewolf/pull/14)
+
+## Contribution
+
+### Development
+
+1. Fork the repository: [https://github.com/hmasdev/autogen-werewolf](https://github.com/hmasdev/autogen-werewolf)
+
+2. Clone the repository
+
+   ```bash
+   git clone https://github.com/{YOURE_NAME}/autogen-werewolf
+   cd autogen-werewolf
+   ```
+
+3. Create a virtual environment
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate
+   ```
+
+4. Install the required packages
+
+   ```bash
+   pip install -e .[dev]
+   ```
+
+5. Checkout your working branch
+
+   ```bash
+   git checkout -b your-working-branch
+   ```
+
+6. Make your changes
+
+7. Test your changes
+
+   ```bash
+   pytest
+   flake8 autogen-werewolf tests
+   mypy autogen-werewolf tests
+   ```
+
+8. Commit your changes
+
+   ```bash
+   git add .
+   git commit -m "Your commit message"
+   ```
+
+9. Push your changes
+
+   ```bash
+   git push origin your-working-branch
+   ```
+
+10. Create a pull request: [https://github.com/hmasdev/autogen-werewolf/compare](https://github.com/hmasdev/autogen-werewolf/compare)
+
+Note that you can use `uv` to develop the project in step 3, 4 and 7.
+
+### Update README
+
+1. Fork the repository: [https://github.com/hmasdev/autogen-werewolf](https://github.com/hmasdev/autogen-werewolf)
+
+2. Clone the repository
+
+   ```bash
+   git clone https://github.com/{YOURE_NAME}/autogen-werewolf
+   cd autogen-werewolf
+   ```
+
+3. Create a virtual environment
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate
+   ```
+
+4. Install the required packages
+
+   ```bash
+   pip install -e .[dev]
+   ```
+
+5. Checkout your working branch
+
+   ```bash
+   git checkout -b your-working-branch
+   ```
+
+6. Make your changes
+
+   - Update **./README.md.j2**
+
+     - **CAUTION**: Do not update **./README.md** directly. It will be generated automatically from ./README.md.j2.
+
+   - Update or add an example in [./examples](./examples/)
+     - Name Rule: `Case{number}.json`
+     - Schema:
+
+       ```json
+       {
+           "$schema": "http://json-schema.org/draft-07/schema#",
+           "type": "object",
+           "properties": {
+               "title": {
+               "type": "string",
+               "description": "The title of the example case."
+               },
+               "description": {
+               "type": "string",
+               "description": "A brief description of the example case."
+               },
+               "log": {
+               "type": "string",
+               "description": "The game log for the example case."
+               },
+               "log_translated": {
+               "type": "object",
+               "description": "Translations of the game log.",
+               "additionalProperties": {
+                   "type": "string"
+               }
+               }
+           },
+           "required": ["title", "description", "log", "log_translated"]
+       }
+       ```
+
+7. Test your changes
+
+   ```bash
+   python update_readme.py
+   ```
+
+8. Commit your changes
+
+   ```bash
+   git add .
+   git commit -m "Your commit message"
+   ```
+
+9. Push your changes
+
+   ```bash
+   git push origin your-working-branch
+   ```
+
+10. Create a pull request: [https://github.com/hmasdev/autogen-werewolf/compare](https://github.com/hmasdev/autogen-werewolf/compare)
+
+### Classes
+
+```mermaid
+classDiagram
+
+   class ConversableAgent {
+      <<external>>
+   }
+
+   class IWerewolfPlayer {
+      <<interface>>
+   }
+   class BaseWerewolfPlayer {
+      <<abstract>>
+   }
+
+   class DefaultGameMaster {
+      <<concrete>>
+   }
+   class VillagerRole {
+      <<concrete>>
+   }
+   class WerewolfRole {
+      <<concrete>>
+   }
+   class KnightRole {
+      <<concrete>>
+   }
+   class FortuneTellerRole {
+      <<concrete>>
+   }
+
+   class GroupChatManager {
+      <<external>>
+   }
+   class IWerewolfGameMaster {
+      <<interface>>
+   }
+   class BaseGameMaster {
+      <<abstract>>
+   }
+
+   VillagerRole --|> BaseWerewolfPlayer
+   WerewolfRole --|> BaseWerewolfPlayer
+   KnightRole --|> BaseWerewolfPlayer
+   FortuneTellerRole --|> BaseWerewolfPlayer
+   IWerewolfPlayer <|.. BaseWerewolfPlayer
+   IWerewolfPlayer --|> ConversableAgent
+
+   BaseGameMaster <|-- DefaultGameMaster
+   IWerewolfGameMaster <|.. BaseGameMaster
+   IWerewolfGameMaster --|> GroupChatManager
+```
+
+NOTE: `IWereWolfPlayer` and `IWerewolfGameMaster` are NOT interfaces strictly, because they inherit from `ConversableAgent` and `GroupChatManager` respectively. They are introduced to avoid circular dependencies.
+
+## LICENSE
+
+[MIT](https://github.com/hmasdev/autogen-werewolf/tree/main/LICENSE)
+
+## Authors
+
+- [hmasdev](https://github.com/hmasdev)
+
+## Reference
+
+- Autogen: [https://github.com/microsoft/autogen](https://github.com/microsoft/autogen)
+- Click: [https://github.com/pallets/click](https://github.com/pallets/click)
+- LangChain: [https://github.com/langchain-ai/langchain](https://github.com/langchain-ai/langchain)
+- python-dotenv: [https://github.com/theskumar/python-dotenv](https://github.com/theskumar/python-dotenv)
+- Werewolf Game (in Japanese): [https://ja.wikipedia.org/wiki/%E4%BA%BA%E7%8B%BC%E3%82%B2%E3%83%BC%E3%83%A0](https://ja.wikipedia.org/wiki/%E4%BA%BA%E7%8B%BC%E3%82%B2%E3%83%BC%E3%83%A0)
