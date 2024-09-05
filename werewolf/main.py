@@ -23,6 +23,7 @@ from .utils.printer import KEYS_FOR_PRINTER, create_print_func
 @click.option('-m', '--model', default=DEFAULT_MODEL, help=f'The model name. Default is {DEFAULT_MODEL}.')  # noqa
 @click.option('-p', '--printer', default='click.echo', help=f'The printer name. The valid values is in {KEYS_FOR_PRINTER}. Default is click.echo.')  # noqa
 @click.option('--sub-model', default=DEFAULT_MODEL, help=f'The sub-model name. Default is {DEFAULT_MODEL}.')  # noqa
+@click.option('--seed', default=None, help='The random seed.')  # noqa
 @click.option('--log-level', default='WARNING', help='The log level, DEBUG, INFO, WARNING, ERROR or CRITICAL. Default is WARNING.')  # noqa
 @click.option('--debug', is_flag=True, help='Whether to show debug logs or not.')  # noqa
 def main(
@@ -38,9 +39,14 @@ def main(
     model: str,
     printer: str,
     sub_model: str,
+    seed: int | None,
     log_level: str,
     debug: bool,
 ):
+    if seed is not None:
+        import random
+        random.seed(seed)
+
     load_dotenv(),
     if os.environ.get('OPENAI_API_KEY') is None:
         raise ValueError('You must set OPENAI_API_KEY in your environment variables or .env file.')  # noqa
