@@ -76,17 +76,19 @@ Options:
                                   ('print', 'click.echo', 'logging.info').
                                   Default is click.echo.
   --sub-model TEXT                The sub-model name. Default is gpt-4o-mini.
+  --seed TEXT                     The random seed.
   --log-level TEXT                The log level, DEBUG, INFO, WARNING, ERROR
                                   or CRITICAL. Default is WARNING.
   --debug                         Whether to show debug logs or not.
   --help                          Show this message and exit.
+
 ```
 
 If you don't use `docker`, ignore `docker compose run werewolf` in the above commands.
 
 ## Examples
 
-### Case 1: 1 villager, 1 werewolf, 1 knight and 1 fortune teller with 2 times to speak per day
+### Case1: 1 villager, 1 werewolf, 1 knight and 1 fortune teller with 2 times to speak per day
 
 This is an example of a werewolf game with 1 villager, 1 werewolf, 1 knight and 1 fortune teller with 2 times to speak per day.
 
@@ -95,7 +97,7 @@ This is an example of a werewolf game with 1 villager, 1 werewolf, 1 knight and 
 <summary> Game Log </summary>
 
 ```sh
- $ docker compose run werewolf python -m werewolf -n 4 -w 1 -k 1 -f 1 -t 2 -m 'gpt-4o-mini' --sub-model 'gpt-4o-mini'
+$ docker compose run werewolf python -m werewolf -n 4 -w 1 -k 1 -f 1 -t 2 -m 'gpt-4o-mini' --sub-model 'gpt-4o-mini'
 =============================== Day 1 (Daytime) ================================
 Player0 (to GameMaster):
 
@@ -270,6 +272,7 @@ Think about what has happened and what you should do in the next action.
 =============================================================================
 ================================ Game Result ================================
 ('VillagersWin', {'Player0': {'role': 'Knight', 'status': <EStatus.Alive: 'Alive'>}, 'Player1': {'role': 'Werewolf', 'status': <EStatus.Excluded: 'Excluded'>}, 'Player2': {'role': 'FortuneTeller', 'status': <EStatus.Alive: 'Alive'>}, 'Player3': {'role': 'Villager', 'status': <EStatus.Alive: 'Alive'>}})
+
 ```
 
 </details>
@@ -456,7 +459,7 @@ Player1はゲームから除外されました。
 
 </details>
 
-### Case 2: (Open Game) 1 villager, 1 werewolf, 1 knight and 1 fortune teller with 2 times to speak per day
+### Case2: (Open Game) 1 villager, 1 werewolf, 1 knight and 1 fortune teller with 2 times to speak per day
 
 This is an example of a **opened** werewolf game with 1 villager, 1 werewolf, 1 knight and 1 fortune teller with 2 times to speak per day.
 
@@ -465,10 +468,10 @@ Note that each player cannot know the secret contents of what another player has
 
 <details>
 
-<summary>Game Log</summary>
+<summary> Game Log </summary>
 
 ```sh
- $ docker compose run werewolf python -m werewolf -n 4 -w 1 -k 1 -f 1 -t 2 -m 'gpt-4o-mini' --sub-model 'gpt-4o-mini' -o
+$ docker compose run werewolf python -m werewolf -n 4 -w 1 -k 1 -f 1 -t 2 -m 'gpt-4o-mini' --sub-model 'gpt-4o-mini' -o
 GameMaster (to Player0):
 
 You are a player with a role "ERole.Villager" in a werewolf game.
@@ -1398,6 +1401,7 @@ Think about what has happened and what you should do in the next action.
 =============================================================================
 ================================ Game Result ================================
 ('WerewolvesWin', {'Player0': {'role': 'Villager', 'status': <EStatus.Excluded: 'Excluded'>}, 'Player1': {'role': 'FortuneTeller', 'status': <EStatus.Excluded: 'Excluded'>}, 'Player2': {'role': 'Werewolf', 'status': <EStatus.Alive: 'Alive'>}, 'Player3': {'role': 'Knight', 'status': <EStatus.Alive: 'Alive'>}})
+
 ```
 
 </details>
@@ -2337,6 +2341,7 @@ Player0がゲームから除外されました。
 
 </details>
 
+
 ## TODO
 
 - [x] fix a bug that a night actions of a knight and a fortune teller are invalid. See [Case2](#case-2-open-game-1-villager-1-werewolf-1-knight-and-1-fortune-teller-with-2-times-to-speak-per-day);
@@ -2400,6 +2405,96 @@ Player0がゲームから除外されました。
 10. Create a pull request: [https://github.com/hmasdev/autogen-werewolf/compare](https://github.com/hmasdev/autogen-werewolf/compare)
 
 Note that you can use `uv` to develop the project in step 3, 4 and 7.
+
+### Update README
+
+1. Fork the repository: [https://github.com/hmasdev/autogen-werewolf](https://github.com/hmasdev/autogen-werewolf)
+
+2. Clone the repository
+
+   ```bash
+   git clone https://github.com/{YOURE_NAME}/autogen-werewolf
+   cd autogen-werewolf
+   ```
+
+3. Create a virtual environment
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate
+   ```
+
+4. Install the required packages
+
+   ```bash
+   pip install -e .[dev]
+   ```
+
+5. Checkout your working branch
+
+   ```bash
+   git checkout -b your-working-branch
+   ```
+
+6. Make your changes
+
+   - Update **./README.md.j2**
+
+     - **CAUTION**: Do not update **./README.md** directly. It will be generated automatically from ./README.md.j2.
+
+   - Update or add an example in [./examples](./examples/)
+     - Name Rule: `Case{number}.json`
+     - Schema:
+
+       ```json
+       {
+           "$schema": "http://json-schema.org/draft-07/schema#",
+           "type": "object",
+           "properties": {
+               "title": {
+               "type": "string",
+               "description": "The title of the example case."
+               },
+               "description": {
+               "type": "string",
+               "description": "A brief description of the example case."
+               },
+               "log": {
+               "type": "string",
+               "description": "The game log for the example case."
+               },
+               "log_translated": {
+               "type": "object",
+               "description": "Translations of the game log.",
+               "additionalProperties": {
+                   "type": "string"
+               }
+               }
+           },
+           "required": ["title", "description", "log", "log_translated"]
+       }
+       ```
+
+7. Test your changes
+
+   ```bash
+   python update_readme.py
+   ```
+
+8. Commit your changes
+
+   ```bash
+   git add .
+   git commit -m "Your commit message"
+   ```
+
+9. Push your changes
+
+   ```bash
+   git push origin your-working-branch
+   ```
+
+10. Create a pull request: [https://github.com/hmasdev/autogen-werewolf/compare](https://github.com/hmasdev/autogen-werewolf/compare)
 
 ### Classes
 
