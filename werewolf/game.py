@@ -3,7 +3,7 @@ import logging
 from typing import Iterable
 
 import autogen
-from langchain_openai import ChatOpenAI
+from langchain_core.language_models import BaseChatModel
 
 from .const import DEFAULT_MODEL, EGameMaster
 from .config import GameConfig
@@ -22,7 +22,7 @@ def game(
     include_human: bool = False,
     open_game: bool = False,
     config_list=[{'model': DEFAULT_MODEL}],
-    llm: ChatOpenAI | str | None = None,
+    llm: BaseChatModel | str | None = None,
     printer: str = 'click.echo',
     log_file: str = 'werewolf.log',
     logger: logging.Logger = logging.getLogger(__name__),

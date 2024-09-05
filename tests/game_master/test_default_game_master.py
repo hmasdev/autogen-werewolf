@@ -3,7 +3,7 @@ from dataclasses import asdict
 import os
 import autogen
 from flaky import flaky
-from langchain_openai import ChatOpenAI
+from langchain_core.language_models import BaseChatModel
 import pytest
 from pytest_mock import MockerFixture
 from werewolf.config import GameConfig
@@ -157,7 +157,7 @@ def test_DefaultGameMaster__clean_name(
     input_name = ' Player0 '
     expected = 'Player0'
     llm_output = expected
-    llm_mock = mocker.MagicMock(spec=ChatOpenAI)
+    llm_mock = mocker.MagicMock(spec=BaseChatModel)
     llm_mock.invoke.return_value = namedtuple('BaseMessage', ['content'])(llm_output)  # noqa
     create_chat_openai_model_mock = mocker.patch(
         'werewolf.game_master.default_game_master.create_chat_openai_model',
@@ -190,7 +190,7 @@ def test_DefaultGameMaster__clean_name_all_fail(
     input_name = ''
     expected = 'None'
     llm_output = 'dummy'
-    llm_mock = mocker.MagicMock(spec=ChatOpenAI)
+    llm_mock = mocker.MagicMock(spec=BaseChatModel)
     llm_mock.invoke.return_value = namedtuple('BaseMessage', ['content'])(llm_output)  # noqa
     _ = mocker.patch(
         'werewolf.game_master.default_game_master.create_chat_openai_model',
@@ -223,7 +223,7 @@ def test_DefaultGameMaster__clean_name_n_fails(
     expected = 'Player0'
     llm_output_fail = 'dummy'
     llm_output = expected
-    llm_mock = mocker.MagicMock(spec=ChatOpenAI)
+    llm_mock = mocker.MagicMock(spec=BaseChatModel)
     llm_mock.invoke.side_effect = [
         namedtuple('BaseMessage', ['content'])(llm_output_fail)
         for _ in range(n_fails)
@@ -391,7 +391,7 @@ def test_DefaultGameMaster_ask_to_vote_without_last_message_content(
     # init
     expected: str = 'None'
     llm_output = 'dummy'
-    llm_mock = mocker.MagicMock(spec=ChatOpenAI)
+    llm_mock = mocker.MagicMock(spec=BaseChatModel)
     llm_mock.invoke.return_value = namedtuple('BaseMessage', ['content'])(llm_output)  # noqa
     _ = mocker.patch(
         'werewolf.game_master.default_game_master.create_chat_openai_model',

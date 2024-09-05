@@ -12,10 +12,10 @@ from langchain.output_parsers import (
     EnumOutputParser,
     RetryWithErrorOutputParser,
 )
+from langchain_core.language_models import BaseChatModel
 from langchain_core.prompt_values import StringPromptValue
 from langchain_core.runnables import Runnable, RunnableLambda
 from langchain.output_parsers.retry import NAIVE_RETRY_WITH_ERROR_PROMPT
-from langchain_openai import ChatOpenAI
 
 from ..alias import WhoToVote
 from .base import BaseGameMaster
@@ -190,7 +190,7 @@ class DefaultGameMaster(BaseGameMaster):
         self,
         name: str,
         question: str,
-        llm: ChatOpenAI | str | None = None,
+        llm: BaseChatModel | str | None = None,
         max_retry: int = 5,
     ) -> str:  # noqa
         logging.debug(f'Clean name: {name}')
