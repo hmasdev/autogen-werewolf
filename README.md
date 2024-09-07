@@ -10,8 +10,13 @@
 
 ## Requirements
 
-- OpenAI API Key
-  - [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+- Get your API key
+  - OpenAI API Key
+    - [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+  - Groq API Key
+    - [https://console.groq.com/keys](https://console.groq.com/keys)
+  - Gemini API Key
+    - [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
 
 - (optional) `docker compose`
 - (optional) python >= 3.10
@@ -23,10 +28,13 @@ Note that either of `docker compose` or `python` is required.
 ### Preparation
 
 1. Create `.env` file
-2. Set `OPENAI_API_KEY`:
+2. Set `OPENAI_API_KEY`, `GROQ_API_KEY` or `GOOGLE_API_KEY` in the `.env` file as follows:
 
    ```text
-   OPENAI_API_KEY=HERE_IS_YOUR_OPENAI_API_KEY
+   OPENAI_API_KEY=HERE_IS_YOUR_API_KEY
+   GROQ_API_KEY=HERE_IS_YOUR_API_KEY
+   GOOGLE_API_KEY=HERE_IS_YOUR_API_KEY
+
    ```
 
 3. If you don't use `docker` but `python` in your machine, create a virtual environment and install libraries manually:
@@ -71,12 +79,39 @@ Options:
   -o, --open-game                 Whether to open game or not.
   -l, --log TEXT                  The log file name. Default is
                                   werewolf%Y%m%d%H%M%S.log
-  -m, --model TEXT                The model name. Default is gpt-4o-mini.
+  -m, --model TEXT                The model name. Default is gpt-4o-mini. The
+                                  valid model is as follows: ('gpt-3.5-turbo',
+                                  'gpt-4', 'gpt-4-turbo', 'gpt-4o',
+                                  'gpt-4o-mini', 'gemini-1.5-flash', 'gemini-
+                                  pro-vision', 'gemini-pro', 'gemma2-9b-it',
+                                  'gemma2-7b-it', 'llama3-groq-70b-8192-tool-
+                                  use-preview', 'llama3-groq-8b-8192-tool-use-
+                                  preview', 'llama-3.1-70b-versatile',
+                                  'llama-3.1-8b-instant', 'llama-guard-3-8b',
+                                  'llava-v1.5-7b-4096-preview',
+                                  'llama3-70b-8192', 'llama3-8b-8192',
+                                  'mixtral-8x7b-32768') or the repository id
+                                  of huggingface.
   -p, --printer TEXT              The printer name. The valid values is in
                                   ('print', 'click.echo', 'logging.info').
                                   Default is click.echo.
   --sub-model TEXT                The sub-model name. Default is gpt-4o-mini.
-  --seed TEXT                     The random seed.
+                                  The valid model is as follows:
+                                  ('gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo',
+                                  'gpt-4o', 'gpt-4o-mini', 'gemini-1.5-flash',
+                                  'gemini-pro-vision', 'gemini-pro',
+                                  'gemma2-9b-it', 'gemma2-7b-it',
+                                  'llama3-groq-70b-8192-tool-use-preview',
+                                  'llama3-groq-8b-8192-tool-use-preview',
+                                  'llama-3.1-70b-versatile',
+                                  'llama-3.1-8b-instant', 'llama-guard-3-8b',
+                                  'llava-v1.5-7b-4096-preview',
+                                  'llama3-70b-8192', 'llama3-8b-8192',
+                                  'mixtral-8x7b-32768') or the repository id
+                                  of huggingface
+  --seed INTEGER                  The random seed. Default to -1. NOTE: a
+                                  negative integer means "not specify the
+                                  seed"
   --log-level TEXT                The log level, DEBUG, INFO, WARNING, ERROR
                                   or CRITICAL. Default is WARNING.
   --debug                         Whether to show debug logs or not.
