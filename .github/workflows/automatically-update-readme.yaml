@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 0 1 * *"
+  push:
+    branches:
+      - main
 
 env:
   BRANCH_HEADER: "bot/update-readme-"
