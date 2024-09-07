@@ -5,10 +5,10 @@ from typing import Iterable
 import autogen
 from langchain_core.language_models import BaseChatModel
 
+from .chat_models import create_chat_model
 from .const import DEFAULT_MODEL, EGameMaster
 from .config import GameConfig
 from .game_master.base import BaseGameMaster
-from .utils.openai import create_chat_openai_model
 from .utils.printer import create_print_func
 
 
@@ -23,13 +23,14 @@ def game(
     open_game: bool = False,
     config_list=[{'model': DEFAULT_MODEL}],
     llm: BaseChatModel | str | None = None,
+    seed: int | None = None,
     printer: str = 'click.echo',
     log_file: str = 'werewolf.log',
     logger: logging.Logger = logging.getLogger(__name__),
 ):
     # preparation
     print_func = create_print_func(printer)
-    llm = create_chat_openai_model(llm)
+    llm = create_chat_model(llm, seed=seed)
     master = BaseGameMaster.instantiate(
         EGameMaster.Default,  # TODO
         groupchat=autogen.GroupChat(agents=[], messages=[]),

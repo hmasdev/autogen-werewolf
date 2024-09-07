@@ -20,6 +20,7 @@ from langchain.output_parsers.retry import NAIVE_RETRY_WITH_ERROR_PROMPT
 from ..alias import WhoToVote
 from .base import BaseGameMaster
 from ..base import IWerewolfPlayer
+from ..chat_models import create_chat_model
 from ..const import (
     EResult,
     ERole,
@@ -31,7 +32,6 @@ from ..const import (
 from ..config import GameConfig
 from ..game_player.base import BaseWerewolfPlayer
 from ..utils.autogen_utils import just1turn
-from ..utils.openai import create_chat_openai_model
 from ..utils.utils import (
     consecutive_string_generator,
     instant_decoration,
@@ -195,7 +195,7 @@ class DefaultGameMaster(BaseGameMaster):
     ) -> str:  # noqa
         logging.debug(f'Clean name: {name}')
         base_llm_chain: Runnable[str, str] = (
-            create_chat_openai_model(llm)
+            create_chat_model(llm)
             | RunnableLambda(attrgetter('content'))
         )
         chain = RetryWithErrorOutputParser.from_llm(

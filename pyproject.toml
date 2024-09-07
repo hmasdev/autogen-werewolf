@@ -6,8 +6,10 @@ requires-python = ">=3.10"
 dependencies = [
     "click>=8.1.7",
     "langchain>=0.2.0",
+    "langchain-groq>=0.1.9",
+    "langchain-google-genai>=1.0.10",
     "langchain-openai",
-    "pyautogen==0.2.16",
+    "pyautogen[gemini,groq]>=0.2.32",
     "python-dotenv>=1.0.1",
 ]
 authors = [{ name = "hmasdev" }]
