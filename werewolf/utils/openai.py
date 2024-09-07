@@ -4,7 +4,7 @@ from ..const import DEFAULT_MODEL
 from ..utils.utils import deprecate
 
 
-@deprecate(msg='Use werewolf.chat_models.create_chat_model instead.')
+@deprecate(msg='Use werewolf.chat_models.create_chat_model instead.')  # type: ignore # noqa
 @lru_cache(maxsize=None)
 def create_chat_openai_model(
     llm: ChatOpenAI | str | None = None,

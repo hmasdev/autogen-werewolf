@@ -69,7 +69,7 @@ def main(
             'model': model,
             'api_type': service.value,
             # FIXME: this is not good because the raw token is on memory
-            'api_key': os.getenv(SERVICE_APIKEY_ENVVAR_MAP[service]),
+            'api_key': os.getenv(SERVICE_APIKEY_ENVVAR_MAP[service]),  # type: ignore # noqa
         }]
 
     result = game(

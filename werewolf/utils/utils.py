@@ -58,7 +58,7 @@ def deprecate(
     logger: Logger = getLogger(__name__),
 ) -> (
     Callable[[InputType], OutputType]
-    | Callable[[Callable[[InputType], OutputType]], Callable[[InputType], OutputType]]
+    | Callable[[Callable[[InputType], OutputType]], Callable[[InputType], OutputType]]  # noqa
 ):
     """Decorator to deprecate a function.
 
@@ -72,7 +72,7 @@ def deprecate(
     """  # noqa
 
     if func is None:
-        return partial(deprecate, msg=msg, logger=logger)
+        return partial(deprecate, msg=msg, logger=logger)  # type: ignore
 
     def wrapper(*args, **kwargs):
         if hasattr(func, '__name__'):

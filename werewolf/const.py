@@ -60,7 +60,6 @@ MODEL_SERVICE_MAP: dict[str, EChatService] = {
     'gemini-1.5-flash': EChatService.Google,
     "gemini-pro-vision": EChatService.Google,
     'gemini-pro': EChatService.Google,
-    'mixtral-8x7b-32768': EChatService.Groq,
     'gemma2-9b-it': EChatService.Groq,
     'gemma2-7b-it': EChatService.Groq,
     'llama3-groq-70b-8192-tool-use-preview': EChatService.Groq,
