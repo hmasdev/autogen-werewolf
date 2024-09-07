@@ -9,9 +9,9 @@ from werewolf.utils.openai import create_chat_openai_model
 load_dotenv()
 
 
-def test_create_chat_openai_model_with_none(mocker: MockerFixture):
+def test_create_chat_openai_model_with_none(mocker: MockerFixture) -> None:  # noqa
     coai_mock = mocker.patch("werewolf.utils.openai.ChatOpenAI")
-    create_chat_openai_model()
+    create_chat_openai_model()  # type: ignore
     coai_mock.assert_called_once_with(model=DEFAULT_MODEL, seed=None)
 
 
@@ -19,15 +19,15 @@ def test_create_chat_openai_model_with_none(mocker: MockerFixture):
 def test_create_chat_openai_model_with_str(
     model_name: str,
     mocker: MockerFixture,
-):
+) -> None:
     coai_mock = mocker.patch("werewolf.utils.openai.ChatOpenAI")
-    create_chat_openai_model(model_name)
+    create_chat_openai_model(model_name)  # type: ignore
     coai_mock.assert_called_once_with(model=model_name, seed=None)
 
 
-def test_create_chat_openai_model_with_instance(mocker: MockerFixture):
+def test_create_chat_openai_model_with_instance(mocker: MockerFixture) -> None:  # noqa
     llm = mocker.MagicMock(spec=ChatOpenAI)
-    actual = create_chat_openai_model(llm)
+    actual: ChatOpenAI = create_chat_openai_model(llm)
     assert actual is llm
 
 
@@ -43,13 +43,13 @@ def test_create_chat_openai_model_return_same_instance_for_same_input(
     llm: str,
     seed: int,
     mocker: MockerFixture,
-):
+) -> None:
     ChatOpenAI_mock = mocker.patch(
         "werewolf.utils.openai.ChatOpenAI",
         return_value=mocker.MagicMock(spec=ChatOpenAI),
     )
-    actual1 = create_chat_openai_model(llm, seed)
-    actual2 = create_chat_openai_model(llm, seed)
+    actual1: ChatOpenAI = create_chat_openai_model(llm, seed)  # type: ignore
+    actual2: ChatOpenAI = create_chat_openai_model(llm, seed)  # type: ignore
     assert actual1 is actual2
     ChatOpenAI_mock.assert_called_once_with(model=llm, seed=seed)
 
@@ -66,6 +66,6 @@ def test_create_chat_openai_model_return_same_instance_for_same_input(
         None,
     ],
 )
-def test_create_chat_openai_model_with_real_instance(llm: str | None):
-    actual = create_chat_openai_model(llm)
+def test_create_chat_openai_model_with_real_instance(llm: str | None) -> None:
+    actual: ChatOpenAI = create_chat_openai_model(llm)  # type: ignore
     assert isinstance(actual, ChatOpenAI)

@@ -10,8 +10,13 @@
 
 ## Requirements
 
-- OpenAI API Key
-  - [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+- Get your API key
+  - OpenAI API Key
+    - [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+  - Groq API Key
+    - [https://console.groq.com/keys](https://console.groq.com/keys)
+  - Gemini API Key
+    - [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
 
 - (optional) `docker compose`
 - (optional) python >= 3.10
@@ -23,10 +28,13 @@ Note that either of `docker compose` or `python` is required.
 ### Preparation
 
 1. Create `.env` file
-2. Set `OPENAI_API_KEY`:
+2. Set `OPENAI_API_KEY`, `GROQ_API_KEY` or `GOOGLE_API_KEY` in the `.env` file as follows:
 
    ```text
-   OPENAI_API_KEY=HERE_IS_YOUR_OPENAI_API_KEY
+   OPENAI_API_KEY=HERE_IS_YOUR_API_KEY
+   GROQ_API_KEY=HERE_IS_YOUR_API_KEY
+   GOOGLE_API_KEY=HERE_IS_YOUR_API_KEY
+
    ```
 
 3. If you don't use `docker` but `python` in your machine, create a virtual environment and install libraries manually:

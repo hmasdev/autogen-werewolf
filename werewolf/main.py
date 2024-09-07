@@ -5,7 +5,14 @@ import os
 import click
 from dotenv import load_dotenv
 
-from .const import DEFAULT_MODEL, ESpeakerSelectionMethod
+from .const import (
+    DEFAULT_MODEL,
+    EChatService,
+    ESpeakerSelectionMethod,
+    MODEL_SERVICE_MAP,
+    SERVICE_APIKEY_ENVVAR_MAP,
+    VALID_MODELS,
+)
 from .game import game
 from .utils.printer import KEYS_FOR_PRINTER, create_print_func
 
@@ -20,10 +27,10 @@ from .utils.printer import KEYS_FOR_PRINTER, create_print_func
 @click.option('-h', '--include-human', is_flag=True, help='Whether to include human or not.')  # noqa
 @click.option('-o', '--open-game', is_flag=True, help='Whether to open game or not.')  # noqa
 @click.option('-l', '--log', default=None, help='The log file name. Default is werewolf%Y%m%d%H%M%S.log')  # noqa
-@click.option('-m', '--model', default=DEFAULT_MODEL, help=f'The model name. Default is {DEFAULT_MODEL}.')  # noqa
+@click.option('-m', '--model', default=DEFAULT_MODEL, help=f'The model name. Default is {DEFAULT_MODEL}. The valid model is as follows: {VALID_MODELS} or the repository id of huggingface.')  # noqa
 @click.option('-p', '--printer', default='click.echo', help=f'The printer name. The valid values is in {KEYS_FOR_PRINTER}. Default is click.echo.')  # noqa
-@click.option('--sub-model', default=DEFAULT_MODEL, help=f'The sub-model name. Default is {DEFAULT_MODEL}.')  # noqa
-@click.option('--seed', default=None, help='The random seed.')  # noqa
+@click.option('--sub-model', default=DEFAULT_MODEL, help=f'The sub-model name. Default is {DEFAULT_MODEL}. The valid model is as follows: {VALID_MODELS} or the repository id of huggingface')  # noqa
+@click.option('--seed', default=-1, help='The random seed. Default to -1. NOTE: a negative integer means "not specify the seed"')  # noqa
 @click.option('--log-level', default='WARNING', help='The log level, DEBUG, INFO, WARNING, ERROR or CRITICAL. Default is WARNING.')  # noqa
 @click.option('--debug', is_flag=True, help='Whether to show debug logs or not.')  # noqa
 def main(
@@ -39,11 +46,11 @@ def main(
     model: str,
     printer: str,
     sub_model: str,
-    seed: int | None,
+    seed: int,
     log_level: str,
     debug: bool,
 ):
-    if seed is not None:
+    if seed >= 0:
         import random
         random.seed(seed)
 
@@ -55,7 +62,15 @@ def main(
 
     log = f'werewolf{dt.now().strftime("%Y%m%d%H%M%S")}.log' if log is None else log  # noqa
     logging.basicConfig(level=logging.DEBUG if debug else getattr(logging, log_level.upper(), 'WARNING'))  # type: ignore # noqa
-    config_list = [{'model': model}]
+    if (service := MODEL_SERVICE_MAP[model]) == EChatService.OpenAI:
+        config_list = [{'model': model}]
+    else:
+        config_list = [{
+            'model': model,
+            'api_type': service.value,
+            # FIXME: this is not good because the raw token is on memory
+            'api_key': os.getenv(SERVICE_APIKEY_ENVVAR_MAP[service]),  # type: ignore # noqa
+        }]
 
     result = game(
         n_players=n_players,
@@ -70,6 +85,7 @@ def main(
         log_file=log,
         config_list=config_list,
         llm=sub_model,
+        seed=seed,
     )
 
     printer_func('================================ Game Result ================================')  # noqa
