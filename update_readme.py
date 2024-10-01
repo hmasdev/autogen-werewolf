@@ -18,7 +18,7 @@ help: str = subprocess.run(
 ).stdout
 examples: dict[str, dict[str, object]] = {
     os.path.splitext(os.path.basename(path).replace('.json', ''))[0]: json.load(open(path))  # noqa
-    for path in glob(os.path.join(EXAMPLES_DIR, '*.json'))
+    for path in sorted(glob(os.path.join(EXAMPLES_DIR, '*.json')))
 }
 
 # render
