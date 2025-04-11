@@ -9,46 +9,46 @@ PREFIX_PLAYER_NAME: str = 'Player'
 
 
 class ESpeakerSelectionMethod(Enum):
-    auto: str = 'auto'
-    round_robin: str = 'round_robin'
-    random: str = 'random'
+    auto = 'auto'
+    round_robin = 'round_robin'
+    random = 'random'
 
 
 class EGameMaster(Enum):
-    Default: str = 'DefaultGameMaster'
+    Default = 'DefaultGameMaster'
 
 
 class ERole(Enum):
-    Villager: str = 'Villager'
-    Werewolf: str = 'Werewolf'
-    Knight: str = 'Knight'
-    FortuneTeller: str = 'FortuneTeller'
+    Villager = 'Villager'
+    Werewolf = 'Werewolf'
+    Knight = 'Knight'
+    FortuneTeller = 'FortuneTeller'
 
 
 class ESide(Enum):
-    Villager: str = 'Villager'
-    Werewolf: str = 'Werewolf'
+    Villager = 'Villager'
+    Werewolf = 'Werewolf'
 
 
 class ESideVictoryCondition(Enum):
-    VillagersWinCondition: str = 'All werewolves are exclude from the game'
-    WerewolvesWinCondition: str = 'Werewolves equal or outnumber half of the total number of players'  # noqa
+    VillagersWinCondition = 'All werewolves are exclude from the game'
+    WerewolvesWinCondition = 'Werewolves equal or outnumber half of the total number of players'  # noqa
 
 
 class EStatus(Enum):
-    Alive: str = 'Alive'
-    Excluded: str = 'Excluded'
+    Alive = 'Alive'
+    Excluded = 'Excluded'
 
 
 class EResult(Enum):
-    VillagersWin: str = 'VillagersWin'
-    WerewolvesWin: str = 'WerewolvesWin'
+    VillagersWin = 'VillagersWin'
+    WerewolvesWin = 'WerewolvesWin'
 
 
 class EChatService(Enum):
-    OpenAI: str = 'openai'
-    Google: str = 'google'
-    Groq: str = 'groq'
+    OpenAI = 'openai'
+    Google = 'google'
+    Groq = 'groq'
 
 
 MODEL_SERVICE_MAP: dict[str, EChatService] = {
