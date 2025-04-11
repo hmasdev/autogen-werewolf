@@ -31,7 +31,7 @@ class ESide(Enum):
 
 
 class ESideVictoryCondition(Enum):
-    VillagersWinCondition = 'All werewolves are exclude from the game'
+    VillagersWinCondition = 'All werewolves are excluded from the game'
     WerewolvesWinCondition = 'Werewolves equal or outnumber half of the total number of players'  # noqa
 
 
