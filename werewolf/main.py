@@ -54,7 +54,7 @@ def main(
         import random
         random.seed(seed)
 
-    load_dotenv(),
+    load_dotenv(override=True)
     if os.environ.get('OPENAI_API_KEY') is None:
         raise ValueError('You must set OPENAI_API_KEY in your environment variables or .env file.')  # noqa
 
