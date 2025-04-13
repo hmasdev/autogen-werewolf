@@ -60,7 +60,7 @@ def main(
 
     printer_func = create_print_func(printer)
 
-    log = f'logs/werewolf{dt.now().strftime("%Y%m%d%H%M%S")}.log' if log is None else log  # noqa
+    log = f'./logs/werewolf{dt.now().strftime("%Y%m%d%H%M%S")}.log' if log is None else log  # noqa
     logging.basicConfig(level=logging.DEBUG if debug else getattr(logging, log_level.upper(), 'WARNING'))  # type: ignore # noqa
     if (service := MODEL_SERVICE_MAP[model]) == EChatService.OpenAI:
         config_list = [{'model': model}]
