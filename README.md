@@ -80,35 +80,48 @@ Options:
   -l, --log TEXT                  The log file name. Default is
                                   werewolf%Y%m%d%H%M%S.log
   -m, --model TEXT                The model name. Default is gpt-4o-mini. The
-                                  valid model is as follows: ('gpt-3.5-turbo',
-                                  'gpt-4', 'gpt-4-turbo', 'gpt-4o',
-                                  'gpt-4o-mini', 'gemini-1.5-flash', 'gemini-
-                                  pro-vision', 'gemini-pro', 'gemma2-9b-it',
-                                  'gemma2-7b-it', 'llama3-groq-70b-8192-tool-
-                                  use-preview', 'llama3-groq-8b-8192-tool-use-
-                                  preview', 'llama-3.1-70b-versatile',
-                                  'llama-3.1-8b-instant', 'llama-guard-3-8b',
-                                  'llava-v1.5-7b-4096-preview',
-                                  'llama3-70b-8192', 'llama3-8b-8192',
-                                  'mixtral-8x7b-32768') or the repository id
-                                  of huggingface.
+                                  valid model is as follows: ('gpt-4o',
+                                  'gpt-4o-mini', 'o1', 'o3-mini', 'o1-mini',
+                                  'gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo',
+                                  'gemini-2.0-flash', 'gemini-2.0-flash-lite',
+                                  'gemini-1.5-flash', 'gemini-1.5-flash-8b',
+                                  'gemini-1.5-pro', 'qwen-2.5-32b',
+                                  'qwen-2.5-coder-32b', 'qwen-qwq-32b',
+                                  'deepseek-r1-distill-qwen-32b',
+                                  'deepseek-r1-distill-llama-70b',
+                                  'gemma2-9b-it', 'llama-3.1-8b-instant',
+                                  'llama-3.2-1b-preview',
+                                  'llama-3.2-3b-preview',
+                                  'llama-3.3-70b-specdec',
+                                  'llama-3.3-70b-versatile',
+                                  'llama3-70b-8192', 'llama3-8b-8192', 'meta-
+                                  llama/llama-4-maverick-17b-128e-instruct',
+                                  'meta-llama/llama-4-scout-17b-16e-instruct',
+                                  'mistral-saba-24b') or the repository id of
+                                  huggingface.
   -p, --printer TEXT              The printer name. The valid values is in
                                   ('print', 'click.echo', 'logging.info').
                                   Default is click.echo.
   --sub-model TEXT                The sub-model name. Default is gpt-4o-mini.
-                                  The valid model is as follows:
-                                  ('gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo',
-                                  'gpt-4o', 'gpt-4o-mini', 'gemini-1.5-flash',
-                                  'gemini-pro-vision', 'gemini-pro',
-                                  'gemma2-9b-it', 'gemma2-7b-it',
-                                  'llama3-groq-70b-8192-tool-use-preview',
-                                  'llama3-groq-8b-8192-tool-use-preview',
-                                  'llama-3.1-70b-versatile',
-                                  'llama-3.1-8b-instant', 'llama-guard-3-8b',
-                                  'llava-v1.5-7b-4096-preview',
-                                  'llama3-70b-8192', 'llama3-8b-8192',
-                                  'mixtral-8x7b-32768') or the repository id
-                                  of huggingface
+                                  The valid model is as follows: ('gpt-4o',
+                                  'gpt-4o-mini', 'o1', 'o3-mini', 'o1-mini',
+                                  'gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo',
+                                  'gemini-2.0-flash', 'gemini-2.0-flash-lite',
+                                  'gemini-1.5-flash', 'gemini-1.5-flash-8b',
+                                  'gemini-1.5-pro', 'qwen-2.5-32b',
+                                  'qwen-2.5-coder-32b', 'qwen-qwq-32b',
+                                  'deepseek-r1-distill-qwen-32b',
+                                  'deepseek-r1-distill-llama-70b',
+                                  'gemma2-9b-it', 'llama-3.1-8b-instant',
+                                  'llama-3.2-1b-preview',
+                                  'llama-3.2-3b-preview',
+                                  'llama-3.3-70b-specdec',
+                                  'llama-3.3-70b-versatile',
+                                  'llama3-70b-8192', 'llama3-8b-8192', 'meta-
+                                  llama/llama-4-maverick-17b-128e-instruct',
+                                  'meta-llama/llama-4-scout-17b-16e-instruct',
+                                  'mistral-saba-24b') or the repository id of
+                                  huggingface
   --seed INTEGER                  The random seed. Default to -1. NOTE: a
                                   negative integer means "not specify the
                                   seed"
