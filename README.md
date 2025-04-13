@@ -78,7 +78,7 @@ Options:
   -h, --include-human             Whether to include human or not.
   -o, --open-game                 Whether to open game or not.
   -l, --log TEXT                  The log file name. Default is
-                                  werewolf%Y%m%d%H%M%S.log
+                                  ./logs/werewolf%Y%m%d%H%M%S.log
   -m, --model TEXT                The model name. Default is gpt-4o-mini. The
                                   valid model is as follows: ('gpt-4o',
                                   'gpt-4o-mini', 'o1', 'o3-mini', 'o1-mini',
