@@ -1,6 +1,6 @@
 [project]
 name = "werewolf"
-version = "0.4.0a0"
+version = "0.4.1"
 description = "A CUI-based simple werewolf game with `autogen`"
 requires-python = ">=3.10"
 dependencies = [
