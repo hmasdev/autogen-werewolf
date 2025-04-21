@@ -1,0 +1,56 @@
+# Git
+.git
+.github
+.gitignore
+
+# python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.cache/
+
+# virtual environment
+.venv/
+venv/
+env/
+ENV/
+*.venv
+
+# build artifacts
+build/
+dist/
+wheels/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# CI/CD artifacts
+.pytest_cache/
+.tox/
+.nox/
+.coverage*
+htmlcov/
+.hypothesis/
+*.prof
+
+# document artifacts
+docs/_build/
+site/
+
+# IDE related
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# credentials
+.env
+.env.*
+*.pem
+*.key
+
+# Docker metafile
+Dockerfile*
+docker-compose*.yml

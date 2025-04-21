@@ -6,6 +6,16 @@ services:
     env_file:
       - .env
     volumes:
-      - .:/workspace
+      - ./examples:/workspace/examples
+      - ./logs:/workspace/logs
+      - ./pics:/workspace/pics
+      - ./tests:/workspace/tests
+      - ./werewolf:/workspace/werewolf
+      - ./pyproject.toml:/workspace/pyproject.toml
+      - ./README.md:/workspace/README.md
+      - ./README.md.j2:/workspace/README.md.j2
+      - ./update_readme.py:/workspace/update_readme.py
+      - ./uv.lock:/workspace/uv.lock
+    entrypoint: ["uv" , "run"]
     command: /bin/bash
     tty: true

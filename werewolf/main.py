@@ -26,7 +26,7 @@ from .utils.printer import KEYS_FOR_PRINTER, create_print_func
 @click.option('-s', '--speaker-selection-method', type=ESpeakerSelectionMethod, default=ESpeakerSelectionMethod.round_robin, help='The method to select a speaker. Default is round_robin.')  # noqa
 @click.option('-h', '--include-human', is_flag=True, help='Whether to include human or not.')  # noqa
 @click.option('-o', '--open-game', is_flag=True, help='Whether to open game or not.')  # noqa
-@click.option('-l', '--log', default=None, help='The log file name. Default is werewolf%Y%m%d%H%M%S.log')  # noqa
+@click.option('-l', '--log', default=None, help='The log file name. Default is ./logs/werewolf%Y%m%d%H%M%S.log')  # noqa
 @click.option('-m', '--model', default=DEFAULT_MODEL, help=f'The model name. Default is {DEFAULT_MODEL}. The valid model is as follows: {VALID_MODELS} or the repository id of huggingface.')  # noqa
 @click.option('-p', '--printer', default='click.echo', help=f'The printer name. The valid values is in {KEYS_FOR_PRINTER}. Default is click.echo.')  # noqa
 @click.option('--sub-model', default=DEFAULT_MODEL, help=f'The sub-model name. Default is {DEFAULT_MODEL}. The valid model is as follows: {VALID_MODELS} or the repository id of huggingface')  # noqa
@@ -54,13 +54,13 @@ def main(
         import random
         random.seed(seed)
 
-    load_dotenv(),
+    load_dotenv(override=True)
     if os.environ.get('OPENAI_API_KEY') is None:
         raise ValueError('You must set OPENAI_API_KEY in your environment variables or .env file.')  # noqa
 
     printer_func = create_print_func(printer)
 
-    log = f'werewolf{dt.now().strftime("%Y%m%d%H%M%S")}.log' if log is None else log  # noqa
+    log = f'./logs/werewolf{dt.now().strftime("%Y%m%d%H%M%S")}.log' if log is None else log  # noqa
     logging.basicConfig(level=logging.DEBUG if debug else getattr(logging, log_level.upper(), 'WARNING'))  # type: ignore # noqa
     if (service := MODEL_SERVICE_MAP[model]) == EChatService.OpenAI:
         config_list = [{'model': model}]
