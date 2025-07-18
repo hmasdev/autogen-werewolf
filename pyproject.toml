@@ -9,7 +9,7 @@ dependencies = [
     "langchain-groq>=0.1.9",
     "langchain-google-genai>=1.0.10",
     "langchain-openai",
-    "pyautogen[gemini,groq]>=0.2.32",
+    "ag2[gemini,groq]>=0.2.32",
     "python-dotenv>=1.0.1",
 ]
 authors = [{ name = "hmasdev" }]
