@@ -9,7 +9,7 @@ dependencies = [
     "langchain-classic>=1.0.0",
     "langchain-groq>=0.1.9",
     "langchain-google-genai>=1.0.10",
-    "langchain-openai",
+    "langchain-openai>=0.1.0",
     "ag2[gemini,groq]>=0.2.32",
     "python-dotenv>=1.0.1",
 ]
