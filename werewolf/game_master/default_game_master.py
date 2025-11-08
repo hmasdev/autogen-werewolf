@@ -8,14 +8,16 @@ import random
 import re
 
 import autogen
-from langchain.output_parsers import (
+from langchain_classic.output_parsers import (
     EnumOutputParser,
     RetryWithErrorOutputParser,
+)
+from langchain_classic.output_parsers.retry import (
+    NAIVE_RETRY_WITH_ERROR_PROMPT,
 )
 from langchain_core.language_models import BaseChatModel
 from langchain_core.prompt_values import StringPromptValue
 from langchain_core.runnables import Runnable, RunnableLambda
-from langchain.output_parsers.retry import NAIVE_RETRY_WITH_ERROR_PROMPT
 
 from ..alias import WhoToVote
 from .base import BaseGameMaster
