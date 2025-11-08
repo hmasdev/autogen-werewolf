@@ -8,13 +8,11 @@ import random
 import re
 
 import autogen
-from langchain_core.output_parsers import (
+from langchain.output_parsers import (
     EnumOutputParser,
-)
-from langchain_core.output_parsers.retry import (
     RetryWithErrorOutputParser,
-    NAIVE_RETRY_WITH_ERROR_PROMPT,
 )
+from langchain.output_parsers.retry import NAIVE_RETRY_WITH_ERROR_PROMPT
 from langchain_core.language_models import BaseChatModel
 from langchain_core.prompt_values import StringPromptValue
 from langchain_core.runnables import Runnable, RunnableLambda
