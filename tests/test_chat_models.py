@@ -27,7 +27,16 @@ def test_create_chat_model_wo_seed(
     expected: type[BaseChatModel],
     mocker: MockerFixture,
 ) -> None:
-    mocker.patch(f'werewolf.chat_models.{expected.__name__}', autospec=True)  # noqa
+    # Create a mock instance
+    mock_instance = mocker.Mock(spec=expected)
+    mock_instance.__class__.__name__ = expected.__name__
+    # Patch the class to return the mock instance
+    mock_cls = mocker.patch(f'werewolf.chat_models.{expected.__name__}', return_value=mock_instance)  # noqa
+    # Also patch it in the _service2cls dictionary
+    from werewolf.const import MODEL_SERVICE_MAP
+    from werewolf.chat_models import _service2cls
+    service = MODEL_SERVICE_MAP[llm]
+    _service2cls[service] = mock_cls
     # assert isinstance(create_chat_model(llm), expected)
     assert create_chat_model(llm).__class__.__name__ == expected.__name__
 
@@ -43,7 +52,16 @@ def test_create_chat_model_w_seed(
     expected: type[BaseChatModel],
     mocker: MockerFixture,
 ) -> None:
-    cls_mock = mocker.patch(f'werewolf.chat_models.{expected.__name__}', autospec=True)  # noqa
+    # Create a mock instance
+    mock_instance = mocker.Mock(spec=expected)
+    mock_instance.__class__.__name__ = expected.__name__
+    # Patch the class to return the mock instance
+    mock_cls = mocker.patch(f'werewolf.chat_models.{expected.__name__}', return_value=mock_instance)  # noqa
+    # Also patch it in the _service2cls dictionary
+    from werewolf.const import MODEL_SERVICE_MAP
+    from werewolf.chat_models import _service2cls
+    service = MODEL_SERVICE_MAP[llm]
+    _service2cls[service] = mock_cls
     # assert isinstance(create_chat_model(llm, seed), expected)
     assert create_chat_model(llm, seed).__class__.__name__ == expected.__name__
 
